@@ -3,11 +3,7 @@ function normalizeOrigin(s) {
   return s.trim().replace(/\/$/, '')
 }
 
-/**
- * Browser origins allowed for CORS (your SPA).
- * Set `FRONTEND_URL` (preferred) or `CORS_ORIGIN` — comma-separated for multiple.
- * Example: https://app.example.com or https://a.com,https://b.com
- */
+// FRONTEND_URL or CORS_ORIGIN — comma-separated origins.
 export const CORS_ALLOWED_ORIGINS = (() => {
   const raw =
     process.env.FRONTEND_URL || process.env.CORS_ORIGIN || 'http://localhost:5173'
@@ -17,15 +13,10 @@ export const CORS_ALLOWED_ORIGINS = (() => {
     .filter(Boolean)
 })()
 
-/** First origin — backward compatible name */
 export const CORS_ORIGIN = CORS_ALLOWED_ORIGINS[0] || 'http://localhost:5173'
 
-/** Public API base URL (optional; for logs / deployment docs) */
 export const BACKEND_URL = normalizeOrigin(process.env.BACKEND_URL || '')
 
-/**
- * Dynamic CORS: allow listed origins + non-browser requests (no Origin header).
- */
 export function corsDynamicOrigin(origin, callback) {
   if (!origin) return callback(null, true)
   if (CORS_ALLOWED_ORIGINS.includes(origin)) return callback(null, true)
@@ -34,13 +25,7 @@ export function corsDynamicOrigin(origin, callback) {
 
 const WEEK_MS = 7 * 24 * 60 * 60 * 1000
 
-/**
- * Session cookie options.
- *
- * Cross-origin SPAs (Netlify + Render, etc.) need `SameSite=None` and `Secure`.
- * In production we default to that unless `CROSS_ORIGIN_COOKIES=false` (same-site only).
- * Development defaults to `Lax` unless `CROSS_ORIGIN_COOKIES=true`.
- */
+// SameSite=None + Secure when cross-site; production defaults unless CROSS_ORIGIN_COOKIES=false.
 export function sessionCookieOptions(maxAgeMs = WEEK_MS) {
   const explicitOff = process.env.CROSS_ORIGIN_COOKIES === 'false'
   const explicitOn =
@@ -69,7 +54,6 @@ export function sessionCookieOptions(maxAgeMs = WEEK_MS) {
   }
 }
 
-/** Options that must match `sessionCookieOptions` when clearing the cookie */
 export function clearSessionCookieOptions() {
   const o = sessionCookieOptions(WEEK_MS)
   return {

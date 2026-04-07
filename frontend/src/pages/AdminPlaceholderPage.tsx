@@ -4,11 +4,9 @@ import './AdminHome.css'
 
 type Props = {
   title: string
-  /** Where the Home button navigates (e.g. back to Maintain User). */
   homeTo?: string
 }
 
-/** Temporary shell until maintain-user / maintain-vendor flows are built. */
 export default function AdminPlaceholderPage({
   title,
   homeTo = '/admin',
@@ -36,9 +34,6 @@ export default function AdminPlaceholderPage({
           </button>
         </div>
         <p className="admin-dashboard-welcome">{title}</p>
-        <p className="ems-placeholder-note">
-          This section will be implemented next.
-        </p>
       </div>
     </div>
   )

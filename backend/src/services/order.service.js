@@ -1,4 +1,3 @@
-/** Must match PostgreSQL `orders_status_check` (human-readable labels). */
 export const VENDOR_ORDER_DB_STATUSES = [
   'Recieved',
   'Ready for Shipping',
@@ -23,7 +22,6 @@ export function normalizeVendorOrderStatusForDb(rawInput) {
   return null
 }
 
-/** Matches lines where vendor_id is either the vendor's user id or vendors.id. */
 export function sqlVendorOwnsOrderLine(paramIdx) {
   return `(oi.vendor_id = $${paramIdx} OR oi.vendor_id IN (SELECT id FROM vendors WHERE user_id = $${paramIdx}))`
 }

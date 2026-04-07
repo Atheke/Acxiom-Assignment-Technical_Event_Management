@@ -1,4 +1,3 @@
-/** Passed via React Router `location.state` after checkout. */
 export type OrderConfirmationState = {
   orderId: number
   grandTotal: number

@@ -1,4 +1,3 @@
-/** Logs failed login attempts (never logs passwords). */
 export function logLoginFailure(req, payload) {
   const entry = {
     event: 'login_failure',

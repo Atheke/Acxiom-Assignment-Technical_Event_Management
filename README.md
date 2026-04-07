@@ -2,6 +2,16 @@
 
 Monorepo with a **Node/Express** API and a **React + Vite + TypeScript** client.
 
+**Live:** [https://technical-event-management-1-jdkz.onrender.com](https://technical-event-management-1-jdkz.onrender.com)
+
+## Sample logins (seed / demo)
+
+These are example accounts from the seed data—not for production.
+
+| Role   | Email               | Password   |
+|--------|---------------------|------------|
+| Admin  | `admin@example.com` | `admin123` |
+
 ## Layout
 
 ```

@@ -1,6 +1,5 @@
 import { Router } from 'express'
 
-/** Cart is client-side in this app; no server cart API. */
 const router = Router()
 
 router.get('/', (_req, res) => {

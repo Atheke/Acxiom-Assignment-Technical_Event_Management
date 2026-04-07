@@ -28,7 +28,6 @@ export default function UserCheckout() {
   const [form, setForm] = useState(defaultForm)
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  /** When true, cart was cleared after placing an order — do not redirect to /user/cart. */
   const skipEmptyCartRedirectRef = useRef(false)
 
   useEffect(() => {

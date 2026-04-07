@@ -1,7 +1,4 @@
-/**
- * Production: set `VITE_BACKEND_URL` to your API origin (e.g. https://api.example.com).
- * Local dev: leave unset to use the Vite proxy (`/api` → backend).
- */
+// `VITE_BACKEND_URL` unset → same-origin `/api` (Vite proxy in dev).
 function apiBase(): string {
   const raw = import.meta.env.VITE_BACKEND_URL
   if (raw == null || String(raw).trim() === '') return ''
@@ -27,7 +24,6 @@ export type AuthUser = {
   name: string
   email: string
   role: Role
-  /** Present for vendors: `vendors.business_name` from the API. */
   businessName?: string
 }
 
@@ -518,7 +514,6 @@ export type VendorSale = {
   createdAt: string
 }
 
-/** Orders that include a line for this vendor (`order_items.vendor_id` = vendor user id). */
 export type VendorOrderSummary = {
   id: number
   totalAmount: number
@@ -540,7 +535,6 @@ export async function fetchVendorOrders(): Promise<VendorOrderSummary[]> {
   return data.items ?? []
 }
 
-/** Values stored in `orders.status` (must match DB CHECK constraint). */
 export type VendorOrderStatusValue =
   | 'Recieved'
   | 'Ready for Shipping'
@@ -620,7 +614,6 @@ export async function fetchVendorUserRequests(): Promise<VendorUserRequestRow[]>
   return data.items ?? []
 }
 
-/** Approved vendors in a category (USER session). */
 export type PublicVendorCard = {
   vendorId: number
   businessName: string
@@ -670,7 +663,6 @@ export async function fetchUserVendorById(
   return data.vendor
 }
 
-/** Products sold by an approved vendor (USER session). */
 export type PublicVendorProduct = {
   id: number
   name: string
@@ -744,7 +736,6 @@ export type UserOrderLine = {
   lineTotal: number
 }
 
-/** `orders` row + `order_items` lines (product name from `products`). */
 export type UserOrderRow = {
   id: number
   userId: number

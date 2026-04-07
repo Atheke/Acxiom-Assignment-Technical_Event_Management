@@ -41,9 +41,6 @@ export default function VendorPlaceholderPage({ title }: Props) {
         <header className="vendor-dashboard-header">
           <p className="vendor-dashboard-welcome-line">{title}</p>
         </header>
-        <p style={{ margin: 0, textAlign: 'center', color: '#fff' }}>
-          This section will be implemented next.
-        </p>
       </div>
     </div>
   )

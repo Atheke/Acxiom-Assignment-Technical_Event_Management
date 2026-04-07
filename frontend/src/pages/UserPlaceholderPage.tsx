@@ -4,7 +4,6 @@ import './UserPlaceholderPage.css'
 
 type Props = {
   title: string
-  /** Short description under the title (optional). */
   description?: string
 }
 
@@ -34,11 +33,7 @@ export default function UserPlaceholderPage({ title, description }: Props) {
       <div className="user-section-panel">
         {description ? (
           <p className="user-section-desc">{description}</p>
-        ) : (
-          <p className="user-section-desc">
-            This section will be implemented next.
-          </p>
-        )}
+        ) : null}
       </div>
     </div>
   )
