@@ -26,7 +26,7 @@ export default function UserCart() {
 
   function onCheckout() {
     if (items.length === 0) return
-    navigate('/user/order-status')
+    navigate('/user/checkout')
   }
 
   return (

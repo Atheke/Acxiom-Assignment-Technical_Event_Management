@@ -1,0 +1,159 @@
+.user-order-status-page {
+  min-height: 100svh;
+  width: 100%;
+  box-sizing: border-box;
+  background: #d9d9d9;
+  padding: 0 0 40px;
+}
+
+.user-order-status-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px 20px;
+  background: #c8c8c8;
+  border-bottom: 1px solid #aaa;
+}
+
+.user-order-status-header-btn {
+  padding: 10px 18px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #fff;
+  background: #2f6fad;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: inherit;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.user-order-status-header-btn:hover {
+  filter: brightness(1.08);
+}
+
+.user-order-status-title {
+  margin: 0;
+  flex: 1;
+  text-align: center;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #1a1a1a;
+}
+
+.user-order-status-placed-note {
+  max-width: 960px;
+  margin: 16px auto 0;
+  padding: 0 20px;
+  text-align: center;
+  color: #333;
+  line-height: 1.5;
+}
+
+.user-order-status-panel {
+  max-width: 960px;
+  margin: 20px auto 0;
+  padding: 0 20px;
+}
+
+.user-order-status-loading,
+.user-order-status-empty {
+  margin: 0;
+  padding: 24px;
+  text-align: center;
+  color: #444;
+  background: #e4e4e4;
+  border-radius: 8px;
+  border: 1px solid #aaa;
+}
+
+.user-order-status-error {
+  margin: 0;
+  padding: 12px 14px;
+  color: #7a1a1a;
+  background: rgba(255, 200, 200, 0.4);
+  border-radius: 8px;
+}
+
+.user-order-status-table-wrap {
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid #aaa;
+  overflow-x: auto;
+}
+
+.user-order-status-table {
+  width: 100%;
+  min-width: 560px;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+}
+
+.user-order-status-table thead th {
+  padding: 12px 10px;
+  text-align: left;
+  background: #4a7fb5;
+  color: #fff;
+  font-weight: 600;
+  border-bottom: 1px solid #3d6a99;
+}
+
+.user-order-status-table tbody td {
+  padding: 0;
+  vertical-align: top;
+  border-bottom: 1px solid #ddd;
+}
+
+.user-order-status-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.user-order-status-value {
+  display: block;
+  margin: 8px;
+  padding: 10px 12px;
+  background: #4a7fb5;
+  color: #fff;
+  border-radius: 8px;
+  font-weight: 600;
+  line-height: 1.35;
+  word-break: break-word;
+  min-height: 2.5em;
+  box-sizing: border-box;
+}
+
+.user-order-status-value-muted {
+  opacity: 0.85;
+  font-weight: 500;
+}
+
+.user-order-status-lines-row td {
+  padding: 0;
+  background: #ececec;
+  border-bottom: 1px solid #ccc;
+}
+
+.user-order-status-lines {
+  padding: 10px 12px 14px;
+}
+
+.user-order-status-lines-label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 6px;
+}
+
+.user-order-status-lines-text {
+  margin: 0;
+  font-size: 0.82rem;
+  line-height: 1.45;
+  color: #222;
+}

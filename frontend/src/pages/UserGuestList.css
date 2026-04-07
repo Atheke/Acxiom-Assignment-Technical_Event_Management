@@ -1,0 +1,253 @@
+.user-gl-page {
+  min-height: 100svh;
+  width: 100%;
+  box-sizing: border-box;
+  background: #d9d9d9;
+  padding: 0 0 40px;
+}
+
+.user-gl-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px 20px;
+  background: #c8c8c8;
+  border-bottom: 1px solid #aaa;
+}
+
+.user-gl-header-btn {
+  padding: 10px 18px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #fff;
+  background: #2f6fad;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: inherit;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.user-gl-header-btn:hover {
+  filter: brightness(1.08);
+}
+
+.user-gl-title {
+  margin: 0;
+  flex: 1;
+  text-align: center;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #1a1a1a;
+}
+
+.user-gl-toolbar {
+  max-width: 960px;
+  margin: 16px auto 0;
+  padding: 0 20px;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.user-gl-add {
+  padding: 10px 20px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #fff;
+  background: #2e7d32;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.user-gl-add:hover {
+  filter: brightness(1.06);
+}
+
+.user-gl-panel {
+  max-width: 960px;
+  margin: 16px auto 0;
+  padding: 0 20px;
+}
+
+.user-gl-error {
+  margin: 0 0 12px;
+  padding: 12px 14px;
+  color: #7a1a1a;
+  background: rgba(255, 200, 200, 0.4);
+  border-radius: 8px;
+}
+
+.user-gl-loading,
+.user-gl-empty {
+  margin: 0;
+  padding: 24px;
+  text-align: center;
+  color: #444;
+}
+
+.user-gl-table-wrap {
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid #aaa;
+}
+
+.user-gl-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+}
+
+.user-gl-table th {
+  padding: 12px 10px;
+  text-align: left;
+  background: #4a7fb5;
+  color: #fff;
+  font-weight: 600;
+}
+
+.user-gl-table td {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+  vertical-align: top;
+}
+
+.user-gl-table tr:last-child td {
+  border-bottom: none;
+}
+
+.user-gl-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.user-gl-btn-update {
+  padding: 6px 12px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #fff;
+  background: #2f6fad;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.user-gl-btn-update:hover {
+  filter: brightness(1.08);
+}
+
+.user-gl-btn-delete {
+  padding: 6px 12px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #fff;
+  background: #c62828;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.user-gl-btn-delete:hover {
+  filter: brightness(1.08);
+}
+
+.user-gl-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  z-index: 1000;
+}
+
+.user-gl-modal {
+  width: 100%;
+  max-width: 440px;
+  background: #fff;
+  border-radius: 10px;
+  padding: 20px 20px 18px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+.user-gl-modal h2 {
+  margin: 0 0 16px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #1a1a1a;
+}
+
+.user-gl-field {
+  margin-bottom: 12px;
+}
+
+.user-gl-field label {
+  display: block;
+  font-size: 0.82rem;
+  font-weight: 700;
+  margin-bottom: 4px;
+  color: #333;
+}
+
+.user-gl-field input,
+.user-gl-field textarea {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10px 12px;
+  font-size: 0.95rem;
+  border: 1px solid #aaa;
+  border-radius: 6px;
+  font-family: inherit;
+}
+
+.user-gl-field textarea {
+  min-height: 72px;
+  resize: vertical;
+}
+
+.user-gl-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.user-gl-modal-cancel {
+  padding: 10px 18px;
+  font-weight: 600;
+  background: #e0e0e0;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.user-gl-modal-save {
+  padding: 10px 18px;
+  font-weight: 700;
+  color: #fff;
+  background: #2f6fad;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.user-gl-modal-save:hover {
+  filter: brightness(1.06);
+}
+
+.user-gl-cell-muted {
+  color: #666;
+}

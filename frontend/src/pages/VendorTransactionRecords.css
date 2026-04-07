@@ -95,6 +95,16 @@
   border-bottom: none;
 }
 
+.vendor-tx-rec-action {
+  font-weight: 700;
+  color: #1a4a7a;
+  text-decoration: none;
+}
+
+.vendor-tx-rec-action:hover {
+  text-decoration: underline;
+}
+
 .vendor-tx-rec-empty,
 .vendor-tx-rec-loading,
 .vendor-tx-rec-error {

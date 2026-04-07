@@ -280,6 +280,72 @@ export type VendorSale = {
   createdAt: string
 }
 
+/** Orders that include a line for this vendor (`order_items.vendor_id` = vendor user id). */
+export type VendorOrderSummary = {
+  id: number
+  totalAmount: number
+  status: string
+  createdAt: string | null
+}
+
+export async function fetchVendorOrders(): Promise<VendorOrderSummary[]> {
+  const res = await fetch(`${API_BASE}/api/vendor/orders`, {
+    credentials: 'include',
+  })
+  const data = (await res.json().catch(() => ({}))) as {
+    items?: VendorOrderSummary[]
+    error?: string
+  }
+  if (!res.ok) {
+    throw new HttpError(data.error || 'Request failed', res.status)
+  }
+  return data.items ?? []
+}
+
+/** Values stored in `orders.status` (must match DB CHECK constraint). */
+export type VendorOrderStatusValue =
+  | 'Recieved'
+  | 'Ready for Shipping'
+  | 'Out For Delivery'
+
+export async function fetchVendorOrder(
+  orderId: number,
+): Promise<VendorOrderSummary> {
+  const res = await fetch(`${API_BASE}/api/vendor/orders/${orderId}`, {
+    credentials: 'include',
+  })
+  const data = (await res.json().catch(() => ({}))) as {
+    order?: VendorOrderSummary
+    error?: string
+  }
+  if (!res.ok) {
+    throw new HttpError(data.error || 'Request failed', res.status)
+  }
+  if (!data.order) throw new Error('Invalid response')
+  return data.order
+}
+
+export async function updateVendorOrderStatus(
+  orderId: number,
+  status: VendorOrderStatusValue,
+): Promise<VendorOrderSummary> {
+  const res = await fetch(`${API_BASE}/api/vendor/orders/${orderId}`, {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+    credentials: 'include',
+    body: JSON.stringify({ status }),
+  })
+  const data = (await res.json().catch(() => ({}))) as {
+    order?: VendorOrderSummary
+    error?: string
+  }
+  if (!res.ok) {
+    throw new HttpError(data.error || 'Request failed', res.status)
+  }
+  if (!data.order) throw new Error('Invalid response')
+  return data.order
+}
+
 export async function fetchVendorSales(): Promise<VendorSale[]> {
   const res = await fetch(`${API_BASE}/api/vendor/sales`, {
     credentials: 'include',
@@ -391,6 +457,155 @@ export async function fetchVendorProductsForUser(
     throw new HttpError(data.error || 'Request failed', res.status)
   }
   return data.items ?? []
+}
+
+export type PaymentMethod = 'CASH' | 'UPI'
+
+export type PlaceOrderLine = {
+  vendorId: number
+  productId: number
+  quantity: number
+}
+
+export async function placeOrder(body: {
+  paymentMethod: PaymentMethod
+  customerName: string
+  email: string
+  phone: string
+  address: string
+  city: string
+  state: string
+  pinCode: string
+  lines: PlaceOrderLine[]
+}): Promise<{ orderId: number; grandTotal: number }> {
+  const res = await fetch(`${API_BASE}/api/user/orders`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    credentials: 'include',
+    body: JSON.stringify(body),
+  })
+  const data = (await res.json().catch(() => ({}))) as {
+    orderId?: number
+    grandTotal?: number
+    error?: string
+  }
+  if (!res.ok) {
+    throw new HttpError(data.error || 'Order failed', res.status)
+  }
+  if (data.orderId == null || data.grandTotal == null) {
+    throw new Error('Invalid response')
+  }
+  return { orderId: data.orderId, grandTotal: Number(data.grandTotal) }
+}
+
+export type UserOrderLine = {
+  productId: number
+  vendorName: string
+  productName: string
+  quantity: number
+  unitPrice: number
+  lineTotal: number
+}
+
+/** `orders` row + `order_items` lines (product name from `products`). */
+export type UserOrderRow = {
+  id: number
+  userId: number
+  totalAmount: number
+  status: string
+  createdAt: string | null
+  lines: UserOrderLine[]
+}
+
+export async function fetchUserOrders(): Promise<UserOrderRow[]> {
+  const res = await fetch(`${API_BASE}/api/user/orders`, {
+    credentials: 'include',
+  })
+  const data = (await res.json().catch(() => ({}))) as {
+    items?: UserOrderRow[]
+    error?: string
+  }
+  if (!res.ok) {
+    throw new HttpError(data.error || 'Request failed', res.status)
+  }
+  return data.items ?? []
+}
+
+export type UserGuest = {
+  id: number
+  guestName: string
+  contactInfo: string | null
+  createdAt: string
+}
+
+export async function fetchUserGuests(): Promise<UserGuest[]> {
+  const res = await fetch(`${API_BASE}/api/user/guests`, {
+    credentials: 'include',
+  })
+  const data = (await res.json().catch(() => ({}))) as {
+    items?: UserGuest[]
+    error?: string
+  }
+  if (!res.ok) {
+    throw new HttpError(data.error || 'Request failed', res.status)
+  }
+  return data.items ?? []
+}
+
+export async function createUserGuest(body: {
+  guestName: string
+  contactInfo?: string
+}): Promise<UserGuest> {
+  const res = await fetch(`${API_BASE}/api/user/guests`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    credentials: 'include',
+    body: JSON.stringify(body),
+  })
+  const data = (await res.json().catch(() => ({}))) as {
+    guest?: UserGuest
+    error?: string
+  }
+  if (!res.ok) {
+    throw new HttpError(data.error || 'Request failed', res.status)
+  }
+  if (!data.guest) throw new Error('Invalid response')
+  return data.guest
+}
+
+export async function updateUserGuest(
+  guestId: number,
+  body: {
+    guestName: string
+    contactInfo?: string
+  },
+): Promise<UserGuest> {
+  const res = await fetch(`${API_BASE}/api/user/guests/${guestId}`, {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+    credentials: 'include',
+    body: JSON.stringify(body),
+  })
+  const data = (await res.json().catch(() => ({}))) as {
+    guest?: UserGuest
+    error?: string
+  }
+  if (!res.ok) {
+    throw new HttpError(data.error || 'Request failed', res.status)
+  }
+  if (!data.guest) throw new Error('Invalid response')
+  return data.guest
+}
+
+export async function deleteUserGuest(guestId: number): Promise<void> {
+  const res = await fetch(`${API_BASE}/api/user/guests/${guestId}`, {
+    method: 'DELETE',
+    credentials: 'include',
+  })
+  const data = (await res.json().catch(() => ({}))) as { error?: string }
+  if (!res.ok) {
+    throw new HttpError(data.error || 'Request failed', res.status)
+  }
 }
 
 export function homePathForRole(role: Role): string {

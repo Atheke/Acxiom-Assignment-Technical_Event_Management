@@ -1,0 +1,115 @@
+.order-success-overlay {
+  min-height: 100svh;
+  width: 100%;
+  box-sizing: border-box;
+  background: #d9d9d9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 16px;
+}
+
+.order-success-modal {
+  width: 100%;
+  max-width: 520px;
+  background: #e8e8e8;
+  border-radius: 12px;
+  padding: 20px 20px 24px;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.18);
+  border: 1px solid #bbb;
+}
+
+.order-success-popup-label {
+  margin: 0 0 6px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #555;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+.order-success-thanks {
+  margin: 0 0 16px;
+  text-align: center;
+  font-size: 1.35rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  color: #1a1a1a;
+}
+
+.order-success-total-box {
+  margin: 0 auto 18px;
+  padding: 14px 16px;
+  text-align: center;
+  background: #4a7fb5;
+  color: #fff;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 1.05rem;
+}
+
+.order-success-total-box span {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 600;
+  opacity: 0.95;
+  margin-bottom: 4px;
+}
+
+.order-success-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px 12px;
+}
+
+@media (max-width: 480px) {
+  .order-success-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.order-success-cell {
+  padding: 10px 12px;
+  background: #4a7fb5;
+  color: #fff;
+  border-radius: 8px;
+  font-size: 0.82rem;
+  line-height: 1.35;
+}
+
+.order-success-cell-label {
+  display: block;
+  font-weight: 700;
+  font-size: 0.72rem;
+  text-transform: capitalize;
+  opacity: 0.92;
+  margin-bottom: 4px;
+}
+
+.order-success-cell-value {
+  font-weight: 600;
+  word-break: break-word;
+}
+
+.order-success-continue {
+  display: block;
+  width: 100%;
+  margin-top: 22px;
+  padding: 14px 20px;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #fff;
+  background: #4a7fb5;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-family: inherit;
+  text-align: center;
+  text-decoration: none;
+  box-sizing: border-box;
+}
+
+.order-success-continue:hover {
+  filter: brightness(1.06);
+}

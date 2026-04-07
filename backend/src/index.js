@@ -412,6 +412,364 @@ app.get('/api/user/vendors/:vendorId/products', async (req, res) => {
   }
 })
 
+app.get('/api/user/guests', async (req, res) => {
+  const d = userOrRespond(req, res)
+  if (!d) return
+  try {
+    const r = await pool.query(
+      `SELECT id,
+              guest_name AS "guestName",
+              contact_info AS "contactInfo",
+              created_at AS "createdAt"
+       FROM guest_list
+       WHERE user_id = $1
+       ORDER BY guest_name ASC`,
+      [d.sub],
+    )
+    res.json({ items: r.rows })
+  } catch (err) {
+    console.error(err)
+    const msg = String(err && err.message ? err.message : err)
+    if (msg.includes('guest_list') && msg.includes('does not exist')) {
+      return res.status(500).json({
+        error:
+          'Database is missing guest_list. Run backend/sql/guest_list.sql',
+      })
+    }
+    res.status(500).json({ error: 'Server error' })
+  }
+})
+
+app.post('/api/user/guests', async (req, res) => {
+  const d = userOrRespond(req, res)
+  if (!d) return
+  const guestName =
+    typeof req.body?.guestName === 'string'
+      ? req.body.guestName.trim()
+      : typeof req.body?.guest_name === 'string'
+        ? req.body.guest_name.trim()
+        : ''
+  const contactInfoRaw =
+    typeof req.body?.contactInfo === 'string'
+      ? req.body.contactInfo.trim()
+      : typeof req.body?.contact_info === 'string'
+        ? req.body.contact_info.trim()
+        : ''
+  if (!guestName) {
+    return res.status(400).json({ error: 'Guest name is required' })
+  }
+  try {
+    const r = await pool.query(
+      `INSERT INTO guest_list (user_id, guest_name, contact_info)
+       VALUES ($1, $2, $3)
+       RETURNING id,
+                 guest_name AS "guestName",
+                 contact_info AS "contactInfo",
+                 created_at AS "createdAt"`,
+      [d.sub, guestName, contactInfoRaw || null],
+    )
+    res.status(201).json({ guest: r.rows[0] })
+  } catch (err) {
+    console.error(err)
+    const msg = String(err && err.message ? err.message : err)
+    if (msg.includes('guest_list') && msg.includes('does not exist')) {
+      return res.status(500).json({
+        error:
+          'Database is missing guest_list. Run backend/sql/guest_list.sql',
+      })
+    }
+    res.status(500).json({ error: 'Server error' })
+  }
+})
+
+app.patch('/api/user/guests/:guestId', async (req, res) => {
+  const d = userOrRespond(req, res)
+  if (!d) return
+  const guestId = Number.parseInt(req.params.guestId, 10)
+  if (!Number.isFinite(guestId)) {
+    return res.status(400).json({ error: 'Invalid guest id' })
+  }
+  const guestName =
+    typeof req.body?.guestName === 'string'
+      ? req.body.guestName.trim()
+      : typeof req.body?.guest_name === 'string'
+        ? req.body.guest_name.trim()
+        : ''
+  const contactInfoRaw =
+    typeof req.body?.contactInfo === 'string'
+      ? req.body.contactInfo.trim()
+      : typeof req.body?.contact_info === 'string'
+        ? req.body.contact_info.trim()
+        : ''
+  if (!guestName) {
+    return res.status(400).json({ error: 'Guest name is required' })
+  }
+  try {
+    const r = await pool.query(
+      `UPDATE guest_list
+       SET guest_name = $1,
+           contact_info = $2
+       WHERE id = $3 AND user_id = $4
+       RETURNING id,
+                 guest_name AS "guestName",
+                 contact_info AS "contactInfo",
+                 created_at AS "createdAt"`,
+      [guestName, contactInfoRaw || null, guestId, d.sub],
+    )
+    if (r.rowCount === 0) {
+      return res.status(404).json({ error: 'Guest not found' })
+    }
+    res.json({ guest: r.rows[0] })
+  } catch (err) {
+    console.error(err)
+    res.status(500).json({ error: 'Server error' })
+  }
+})
+
+app.delete('/api/user/guests/:guestId', async (req, res) => {
+  const d = userOrRespond(req, res)
+  if (!d) return
+  const guestId = Number.parseInt(req.params.guestId, 10)
+  if (!Number.isFinite(guestId)) {
+    return res.status(400).json({ error: 'Invalid guest id' })
+  }
+  try {
+    const r = await pool.query(
+      `DELETE FROM guest_list WHERE id = $1 AND user_id = $2 RETURNING id`,
+      [guestId, d.sub],
+    )
+    if (r.rowCount === 0) {
+      return res.status(404).json({ error: 'Guest not found' })
+    }
+    res.json({ ok: true })
+  } catch (err) {
+    console.error(err)
+    res.status(500).json({ error: 'Server error' })
+  }
+})
+
+app.get('/api/user/orders', async (req, res) => {
+  const d = userOrRespond(req, res)
+  if (!d) return
+  try {
+    const r = await pool.query(
+      `SELECT id,
+              user_id AS "userId",
+              total_amount AS "totalAmount",
+              status,
+              created_at AS "createdAt"
+       FROM orders
+       WHERE user_id = $1
+       ORDER BY created_at DESC NULLS LAST, id DESC`,
+      [d.sub],
+    )
+    const orderRows = r.rows
+    const orderIds = orderRows.map((row) => row.id)
+    const linesByOrderId = new Map()
+
+    if (orderIds.length > 0) {
+      const lr = await pool.query(
+        `SELECT oi.order_id AS "orderId",
+                oi.product_id AS "productId",
+                COALESCE(v.business_name, 'Vendor') AS "vendorName",
+                COALESCE(p.name, 'Product') AS "productName",
+                oi.quantity,
+                oi.price AS "unitPrice"
+         FROM order_items oi
+         LEFT JOIN products p ON p.id = oi.product_id
+         LEFT JOIN vendors v ON v.user_id = oi.vendor_id
+         WHERE oi.order_id = ANY($1::int[])
+         ORDER BY oi.order_id, oi.id`,
+        [orderIds],
+      )
+      for (const line of lr.rows) {
+        const oid = line.orderId
+        const qty = Number(line.quantity)
+        const unit = Number(line.unitPrice)
+        const entry = {
+          productId: line.productId,
+          vendorName: line.vendorName,
+          productName: line.productName,
+          quantity: qty,
+          unitPrice: unit,
+          lineTotal: qty * unit,
+        }
+        const list = linesByOrderId.get(oid)
+        if (list) list.push(entry)
+        else linesByOrderId.set(oid, [entry])
+      }
+    }
+
+    const items = orderRows.map((row) => ({
+      id: row.id,
+      userId: Number(row.userId),
+      totalAmount: Number(row.totalAmount),
+      status: row.status,
+      createdAt: row.createdAt,
+      lines: linesByOrderId.get(row.id) ?? [],
+    }))
+    res.json({ items })
+  } catch (err) {
+    console.error(err)
+    const msg = String(err && err.message ? err.message : err)
+    if (
+      (msg.includes('orders') || msg.includes('order_items')) &&
+      msg.includes('does not exist')
+    ) {
+      return res.status(500).json({
+        error:
+          'Database is missing orders or order_items. Ensure those tables exist.',
+      })
+    }
+    res.status(500).json({ error: 'Server error' })
+  }
+})
+
+app.post('/api/user/orders', async (req, res) => {
+  const decoded = userOrRespond(req, res)
+  if (!decoded) return
+
+  const paymentMethodRaw =
+    typeof req.body?.paymentMethod === 'string'
+      ? req.body.paymentMethod.trim().toUpperCase()
+      : ''
+  const PAYMENT = ['CASH', 'UPI']
+  if (!PAYMENT.includes(paymentMethodRaw)) {
+    return res.status(400).json({ error: 'Payment method must be Cash or UPI' })
+  }
+
+  const customerName =
+    typeof req.body?.customerName === 'string' ? req.body.customerName.trim() : ''
+  const email =
+    typeof req.body?.email === 'string' ? req.body.email.trim() : ''
+  const phone =
+    typeof req.body?.phone === 'string' ? req.body.phone.trim() : ''
+  const addressLine =
+    typeof req.body?.address === 'string' ? req.body.address.trim() : ''
+  const city = typeof req.body?.city === 'string' ? req.body.city.trim() : ''
+  const state =
+    typeof req.body?.state === 'string' ? req.body.state.trim() : ''
+  const pinCode =
+    typeof req.body?.pinCode === 'string' ? req.body.pinCode.trim() : ''
+
+  if (
+    !customerName ||
+    !email ||
+    !phone ||
+    !addressLine ||
+    !city ||
+    !state ||
+    !pinCode
+  ) {
+    return res.status(400).json({ error: 'All address and contact fields are required' })
+  }
+
+  const linesIn = req.body?.lines
+  if (!Array.isArray(linesIn) || linesIn.length === 0) {
+    return res.status(400).json({ error: 'Order must include at least one item' })
+  }
+
+  let client
+  try {
+    client = await pool.connect()
+  } catch (err) {
+    console.error('[db] connect failed', err.code || '', err.message || err)
+    return res.status(503).json({ error: 'Database unavailable' })
+  }
+
+  try {
+    await client.query('BEGIN')
+
+    const verifiedLines = []
+    let grandTotal = 0
+
+    for (const raw of linesIn) {
+      const vendorId = Number(raw.vendorId)
+      const productId = Number(raw.productId)
+      const qty = Math.floor(Number(raw.quantity))
+      if (
+        !Number.isFinite(vendorId) ||
+        !Number.isFinite(productId) ||
+        !Number.isFinite(qty) ||
+        qty < 1
+      ) {
+        await client.query('ROLLBACK')
+        return res.status(400).json({ error: 'Invalid line item' })
+      }
+
+      const pr = await client.query(
+        `SELECT p.id, p.name, p.price, v.user_id AS vendor_user_id
+         FROM products p
+         INNER JOIN vendors v
+           ON v.user_id = p.vendor_id
+           AND v.id = $1
+           AND v.approval_status = 'APPROVED'
+         WHERE p.id = $2`,
+        [vendorId, productId],
+      )
+      if (pr.rows.length === 0) {
+        await client.query('ROLLBACK')
+        return res.status(400).json({ error: 'Invalid product or vendor' })
+      }
+
+      const row = pr.rows[0]
+      const unitPrice = Number(row.price)
+      const lineTotal = unitPrice * qty
+      grandTotal += lineTotal
+      verifiedLines.push({
+        vendorUserId: row.vendor_user_id,
+        productId,
+        unitPrice,
+        quantity: qty,
+      })
+    }
+
+    const ins = await client.query(
+      `INSERT INTO orders (user_id, total_amount, status)
+       VALUES ($1, $2, 'PENDING')
+       RETURNING id`,
+      [decoded.sub, grandTotal],
+    )
+    const orderId = ins.rows[0].id
+
+    for (const ln of verifiedLines) {
+      await client.query(
+        `INSERT INTO order_items (order_id, product_id, vendor_id, quantity, price)
+         VALUES ($1, $2, $3, $4, $5)`,
+        [
+          orderId,
+          ln.productId,
+          ln.vendorUserId,
+          ln.quantity,
+          ln.unitPrice,
+        ],
+      )
+    }
+
+    await client.query('COMMIT')
+    res.status(201).json({
+      orderId,
+      grandTotal,
+    })
+  } catch (err) {
+    await client.query('ROLLBACK').catch(() => {})
+    console.error(err)
+    const msg = String(err && err.message ? err.message : err)
+    if (
+      (msg.includes('orders') || msg.includes('order_items')) &&
+      msg.includes('does not exist')
+    ) {
+      return res.status(500).json({
+        error:
+          'Database is missing orders or order_items. Ensure those tables exist.',
+      })
+    }
+    res.status(500).json({ error: 'Server error' })
+  } finally {
+    client.release()
+  }
+})
+
 app.get('/api/admin/pending-vendors', async (req, res) => {
   if (!adminOrRespond(req, res)) return
   try {
@@ -790,6 +1148,162 @@ app.delete('/api/vendor/products/:productId', async (req, res) => {
       return res.status(404).json({ error: 'Product not found' })
     }
     res.json({ ok: true })
+  } catch (err) {
+    console.error(err)
+    res.status(500).json({ error: 'Server error' })
+  }
+})
+
+/** Must match PostgreSQL `orders_status_check` (human-readable labels, not SNAKE_CASE). */
+const VENDOR_ORDER_DB_STATUSES = [
+  'Recieved',
+  'Ready for Shipping',
+  'Out For Delivery',
+]
+
+function normalizeVendorOrderStatusForDb(rawInput) {
+  const raw = typeof rawInput === 'string' ? rawInput.trim() : ''
+  if (VENDOR_ORDER_DB_STATUSES.includes(raw)) return raw
+  const legacy = {
+    RECEIVED: 'Recieved',
+    RECIEVED: 'Recieved',
+    READY_FOR_SHIPPING: 'Ready for Shipping',
+    OUT_FOR_DELIVERY: 'Out For Delivery',
+  }
+  const snake = raw.toUpperCase().replace(/\s+/g, '_')
+  if (legacy[snake]) return legacy[snake]
+  const lower = raw.toLowerCase()
+  for (const s of VENDOR_ORDER_DB_STATUSES) {
+    if (s.toLowerCase() === lower) return s
+  }
+  return null
+}
+
+/** Matches lines where vendor_id is either the vendor's user id or vendors.id (see checkout insert). */
+function sqlVendorOwnsOrderLine(paramIdx) {
+  return `(oi.vendor_id = $${paramIdx} OR oi.vendor_id IN (SELECT id FROM vendors WHERE user_id = $${paramIdx}))`
+}
+
+app.get('/api/vendor/orders', async (req, res) => {
+  const d = vendorOrRespond(req, res)
+  if (!d) return
+  try {
+    const r = await pool.query(
+      `SELECT o.id,
+              o.total_amount AS "totalAmount",
+              o.status,
+              o.created_at AS "createdAt"
+       FROM orders o
+       WHERE EXISTS (
+         SELECT 1 FROM order_items oi
+         WHERE oi.order_id = o.id AND ${sqlVendorOwnsOrderLine(1)}
+       )
+       ORDER BY o.created_at DESC NULLS LAST, o.id DESC`,
+      [d.sub],
+    )
+    const items = r.rows.map((row) => ({
+      id: row.id,
+      totalAmount: Number(row.totalAmount),
+      status: row.status,
+      createdAt: row.createdAt,
+    }))
+    res.json({ items })
+  } catch (err) {
+    console.error(err)
+    const msg = String(err && err.message ? err.message : err)
+    if (
+      (msg.includes('orders') || msg.includes('order_items')) &&
+      msg.includes('does not exist')
+    ) {
+      return res.status(500).json({
+        error:
+          'Database is missing orders or order_items. Ensure those tables exist.',
+      })
+    }
+    res.status(500).json({ error: 'Server error' })
+  }
+})
+
+app.get('/api/vendor/orders/:orderId', async (req, res) => {
+  const d = vendorOrRespond(req, res)
+  if (!d) return
+  const orderId = Number.parseInt(req.params.orderId, 10)
+  if (!Number.isFinite(orderId)) {
+    return res.status(400).json({ error: 'Invalid order id' })
+  }
+  try {
+    const r = await pool.query(
+      `SELECT o.id,
+              o.total_amount AS "totalAmount",
+              o.status,
+              o.created_at AS "createdAt"
+       FROM orders o
+       WHERE o.id = $1
+         AND EXISTS (
+           SELECT 1 FROM order_items oi
+           WHERE oi.order_id = o.id AND ${sqlVendorOwnsOrderLine(2)}
+         )`,
+      [orderId, d.sub],
+    )
+    if (r.rows.length === 0) {
+      return res.status(404).json({ error: 'Order not found' })
+    }
+    const row = r.rows[0]
+    res.json({
+      order: {
+        id: row.id,
+        totalAmount: Number(row.totalAmount),
+        status: row.status,
+        createdAt: row.createdAt,
+      },
+    })
+  } catch (err) {
+    console.error(err)
+    res.status(500).json({ error: 'Server error' })
+  }
+})
+
+app.patch('/api/vendor/orders/:orderId', async (req, res) => {
+  const d = vendorOrRespond(req, res)
+  if (!d) return
+  const orderId = Number.parseInt(req.params.orderId, 10)
+  if (!Number.isFinite(orderId)) {
+    return res.status(400).json({ error: 'Invalid order id' })
+  }
+  const status = normalizeVendorOrderStatusForDb(req.body?.status)
+  if (!status) {
+    return res.status(400).json({
+      error:
+        'Status must be Recieved, Ready for Shipping, or Out For Delivery',
+    })
+  }
+  try {
+    const r = await pool.query(
+      `UPDATE orders o
+       SET status = $1
+       WHERE o.id = $2
+         AND EXISTS (
+           SELECT 1 FROM order_items oi
+           WHERE oi.order_id = o.id AND ${sqlVendorOwnsOrderLine(3)}
+         )
+       RETURNING o.id,
+                 o.total_amount AS "totalAmount",
+                 o.status,
+                 o.created_at AS "createdAt"`,
+      [status, orderId, d.sub],
+    )
+    if (r.rowCount === 0) {
+      return res.status(404).json({ error: 'Order not found' })
+    }
+    const row = r.rows[0]
+    res.json({
+      order: {
+        id: row.id,
+        totalAmount: Number(row.totalAmount),
+        status: row.status,
+        createdAt: row.createdAt,
+      },
+    })
   } catch (err) {
     console.error(err)
     res.status(500).json({ error: 'Server error' })

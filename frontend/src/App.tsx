@@ -10,7 +10,9 @@ import Login from './pages/Login.tsx'
 import Signup from './pages/Signup.tsx'
 import UserHome from './pages/UserHome.tsx'
 import UserCart from './pages/UserCart.tsx'
-import UserPlaceholderPage from './pages/UserPlaceholderPage.tsx'
+import UserCheckout from './pages/UserCheckout.tsx'
+import UserGuestList from './pages/UserGuestList.tsx'
+import UserOrderStatus from './pages/UserOrderStatus.tsx'
 import UserVendorCategory from './pages/UserVendorCategory.tsx'
 import UserVendorShop from './pages/UserVendorShop.tsx'
 import VendorHome from './pages/VendorHome.tsx'
@@ -20,6 +22,7 @@ import VendorRequestItem from './pages/VendorRequestItem.tsx'
 import VendorYourItems from './pages/VendorYourItems.tsx'
 import VendorTransactionHub from './pages/VendorTransactionHub.tsx'
 import VendorTransactionRecords from './pages/VendorTransactionRecords.tsx'
+import VendorOrderUpdateStatus from './pages/VendorOrderUpdateStatus.tsx'
 import VendorUserRequests from './pages/VendorUserRequests.tsx'
 import './App.css'
 
@@ -193,6 +196,14 @@ export default function App() {
           }
         />
         <Route
+          path="/vendor/transactions/orders/:orderId/update-status"
+          element={
+            <ProtectedRoute allowedRole="VENDOR">
+              <VendorOrderUpdateStatus />
+            </ProtectedRoute>
+          }
+        />
+        <Route
           path="/vendor/transactions/user-requests"
           element={
             <ProtectedRoute allowedRole="VENDOR">
@@ -217,10 +228,18 @@ export default function App() {
           }
         />
         <Route
+          path="/user/checkout"
+          element={
+            <ProtectedRoute allowedRole="USER">
+              <UserCheckout />
+            </ProtectedRoute>
+          }
+        />
+        <Route
           path="/user/guest-list"
           element={
             <ProtectedRoute allowedRole="USER">
-              <UserPlaceholderPage title="Guest List" />
+              <UserGuestList />
             </ProtectedRoute>
           }
         />
@@ -228,7 +247,7 @@ export default function App() {
           path="/user/order-status"
           element={
             <ProtectedRoute allowedRole="USER">
-              <UserPlaceholderPage title="Order Status" />
+              <UserOrderStatus />
             </ProtectedRoute>
           }
         />
