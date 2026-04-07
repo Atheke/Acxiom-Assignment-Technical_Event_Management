@@ -1,0 +1,82 @@
+.maintain-user-panel {
+  width: 100%;
+  max-width: 560px;
+  min-height: 260px;
+  background: #d9d9d9;
+  border-radius: 4px;
+  padding: 20px 20px 28px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.maintain-user-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.maintain-user-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  gap: 16px;
+}
+
+.maintain-user-label {
+  flex: 0 0 160px;
+  margin: 0;
+  padding: 12px 14px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #1a1a1a;
+  background: #fff;
+  border: 1px solid #2e7d32;
+  border-radius: 8px;
+  font-family: inherit;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+.maintain-user-actions {
+  flex: 1;
+  min-width: 140px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.maintain-user-action {
+  margin: 0;
+  padding: 12px 16px;
+  text-align: center;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #1a1a1a;
+  background: #fff;
+  border: 1px solid #2e7d32;
+  border-radius: 8px;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: inherit;
+}
+
+.maintain-user-action:hover {
+  background: #f5faf5;
+}
+
+@media (max-width: 480px) {
+  .maintain-user-row {
+    flex-direction: column;
+  }
+
+  .maintain-user-label {
+    flex: 1 1 auto;
+  }
+}

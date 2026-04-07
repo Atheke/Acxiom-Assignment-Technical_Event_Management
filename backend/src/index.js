@@ -116,14 +116,14 @@ function verifyToken(token) {
   return jwt.verify(token, JWT_SECRET)
 }
 
-/** New passwords are stored as bcrypt hashes. Legacy plain-text rows still verify until updated. */
+/** Verifies login password only against bcrypt hashes stored in the database. */
 async function passwordMatches(plain, stored) {
   if (stored == null || stored === '') return false
   const s = String(stored)
-  if (s.startsWith('$2a$') || s.startsWith('$2b$') || s.startsWith('$2y$')) {
-    return bcrypt.compare(plain, s)
+  if (!s.startsWith('$2a$') && !s.startsWith('$2b$') && !s.startsWith('$2y$')) {
+    return false
   }
-  return plain === s
+  return bcrypt.compare(plain, s)
 }
 
 const VENDOR_CATEGORIES = [
@@ -215,6 +215,7 @@ app.post('/api/auth/signup', async (req, res) => {
 
     await client.query('COMMIT')
 
+    let sessionIssued = false
     if (role === 'USER') {
       const token = signToken({
         sub: userRow.id,
@@ -229,6 +230,7 @@ app.post('/api/auth/signup', async (req, res) => {
         maxAge: maxAgeMs,
         path: '/',
       })
+      sessionIssued = true
     }
 
     res.status(201).json({
@@ -238,7 +240,7 @@ app.post('/api/auth/signup', async (req, res) => {
         email: userRow.email,
         role: userRow.role,
       },
-      sessionIssued: role === 'USER',
+      sessionIssued,
     })
   } catch (err) {
     await client.query('ROLLBACK').catch(() => {})
@@ -262,6 +264,110 @@ app.post('/api/auth/signup', async (req, res) => {
   }
 })
 
+function adminOrRespond(req, res) {
+  const token = req.cookies[COOKIE_NAME]
+  if (!token) {
+    res.status(401).json({ error: 'Not authenticated' })
+    return null
+  }
+  try {
+    const decoded = verifyToken(token)
+    if (decoded.role !== 'ADMIN') {
+      res.status(403).json({ error: 'Forbidden' })
+      return null
+    }
+    return decoded
+  } catch {
+    res.status(401).json({ error: 'Not authenticated' })
+    return null
+  }
+}
+
+app.get('/api/admin/pending-vendors', async (req, res) => {
+  if (!adminOrRespond(req, res)) return
+  try {
+    const r = await pool.query(
+      `SELECT v.id AS "vendorId", u.id AS "userId", u.name, u.email,
+              v.business_name AS "businessName", v.category,
+              v.created_at AS "createdAt"
+       FROM vendors v
+       JOIN users u ON u.id = v.user_id
+       WHERE v.approval_status = 'PENDING'
+       ORDER BY v.created_at ASC`,
+    )
+    res.json({ items: r.rows })
+  } catch (err) {
+    console.error(err)
+    res.status(500).json({ error: 'Server error' })
+  }
+})
+
+app.get('/api/admin/pending-users', async (req, res) => {
+  if (!adminOrRespond(req, res)) return
+  try {
+    const r = await pool.query(
+      `SELECT u.id, u.name, u.email, u.created_at AS "createdAt",
+              v.id AS "vendorId"
+       FROM users u
+       INNER JOIN vendors v ON v.user_id = u.id
+       WHERE v.approval_status = 'PENDING'
+       ORDER BY v.created_at ASC`,
+    )
+    res.json({ items: r.rows })
+  } catch (err) {
+    console.error(err)
+    res.status(500).json({ error: 'Server error' })
+  }
+})
+
+app.post('/api/admin/vendors/:vendorId/approve', async (req, res) => {
+  if (!adminOrRespond(req, res)) return
+  const vendorId = Number.parseInt(req.params.vendorId, 10)
+  if (!Number.isFinite(vendorId)) {
+    return res.status(400).json({ error: 'Invalid vendor id' })
+  }
+  try {
+    const r = await pool.query(
+      `UPDATE vendors
+       SET approval_status = 'APPROVED'
+       WHERE id = $1 AND approval_status = 'PENDING'
+       RETURNING id`,
+      [vendorId],
+    )
+    if (r.rowCount === 0) {
+      return res.status(404).json({ error: 'Pending vendor not found' })
+    }
+    res.json({ ok: true, vendorId: r.rows[0].id })
+  } catch (err) {
+    console.error(err)
+    res.status(500).json({ error: 'Server error' })
+  }
+})
+
+app.post('/api/admin/vendors/:vendorId/reject', async (req, res) => {
+  if (!adminOrRespond(req, res)) return
+  const vendorId = Number.parseInt(req.params.vendorId, 10)
+  if (!Number.isFinite(vendorId)) {
+    return res.status(400).json({ error: 'Invalid vendor id' })
+  }
+  try {
+    const r = await pool.query(
+      `UPDATE vendors
+       SET approval_status = 'REJECTED'
+       WHERE id = $1 AND approval_status = 'PENDING'
+       RETURNING id`,
+      [vendorId],
+    )
+    if (r.rowCount === 0) {
+      return res.status(404).json({ error: 'Pending vendor not found' })
+    }
+    res.json({ ok: true, vendorId: r.rows[0].id })
+  } catch (err) {
+    console.error(err)
+    res.status(500).json({ error: 'Server error' })
+  }
+})
+
 app.get('/api/auth/me', async (req, res) => {
   const token = req.cookies[COOKIE_NAME]
   if (!token) {
@@ -271,6 +377,7 @@ app.get('/api/auth/me', async (req, res) => {
     const decoded = verifyToken(token)
     const r = await pool.query(
       `SELECT u.id, u.name, u.email, u.role,
+              v.business_name AS vendor_business_name,
               v.approval_status AS vendor_approval_status
        FROM users u
        LEFT JOIN vendors v ON v.user_id = u.id
@@ -294,14 +401,16 @@ app.get('/api/auth/me', async (req, res) => {
         })
       }
     }
-    res.json({
-      user: {
-        id: row.id,
-        name: row.name,
-        email: row.email,
-        role: row.role,
-      },
-    })
+    const userOut = {
+      id: row.id,
+      name: row.name,
+      email: row.email,
+      role: row.role,
+    }
+    if (row.role === 'VENDOR' && row.vendor_business_name) {
+      userOut.businessName = row.vendor_business_name
+    }
+    res.json({ user: userOut })
   } catch {
     return res.status(401).json({ error: 'Not authenticated' })
   }
@@ -325,6 +434,7 @@ app.post('/api/auth/login', async (req, res) => {
     const r = await pool.query(
       `SELECT u.id, u.name, u.email, u.password, u.role,
               v.id AS vendor_id,
+              v.business_name AS vendor_business_name,
               v.approval_status AS vendor_approval_status
        FROM users u
        LEFT JOIN vendors v ON v.user_id = u.id
@@ -403,14 +513,16 @@ app.post('/api/auth/login', async (req, res) => {
       path: '/',
     })
 
-    res.json({
-      user: {
-        id: row.id,
-        name: row.name,
-        email: row.email,
-        role: row.role,
-      },
-    })
+    const userOut = {
+      id: row.id,
+      name: row.name,
+      email: row.email,
+      role: row.role,
+    }
+    if (row.role === 'VENDOR' && row.vendor_business_name) {
+      userOut.businessName = row.vendor_business_name
+    }
+    res.json({ user: userOut })
   } catch (err) {
     console.error(err)
     if (isDbConnectionError(err)) {

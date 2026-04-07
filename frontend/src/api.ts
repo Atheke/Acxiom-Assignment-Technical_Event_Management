@@ -17,6 +17,8 @@ export type AuthUser = {
   name: string
   email: string
   role: Role
+  /** Present for vendors: `vendors.business_name` from the API. */
+  businessName?: string
 }
 
 export async function loginRequest(
@@ -110,6 +112,80 @@ export async function signupRequest(body: {
     throw new Error('Invalid response')
   }
   return { user: data.user, sessionIssued: data.sessionIssued }
+}
+
+export type PendingVendor = {
+  vendorId: number
+  userId: number
+  name: string
+  email: string
+  businessName: string
+  category: string
+  createdAt: string
+}
+
+export type PendingUser = {
+  id: number
+  vendorId: number
+  name: string
+  email: string
+  createdAt: string
+}
+
+export async function fetchPendingVendors(): Promise<PendingVendor[]> {
+  const res = await fetch(`${API_BASE}/api/admin/pending-vendors`, {
+    credentials: 'include',
+  })
+  const data = (await res.json().catch(() => ({}))) as {
+    items?: PendingVendor[]
+    error?: string
+  }
+  if (!res.ok) {
+    throw new HttpError(data.error || 'Request failed', res.status)
+  }
+  return data.items ?? []
+}
+
+export async function fetchPendingUsers(): Promise<PendingUser[]> {
+  const res = await fetch(`${API_BASE}/api/admin/pending-users`, {
+    credentials: 'include',
+  })
+  const data = (await res.json().catch(() => ({}))) as {
+    items?: PendingUser[]
+    error?: string
+  }
+  if (!res.ok) {
+    throw new HttpError(data.error || 'Request failed', res.status)
+  }
+  return data.items ?? []
+}
+
+export async function approveVendor(vendorId: number): Promise<void> {
+  const res = await fetch(
+    `${API_BASE}/api/admin/vendors/${vendorId}/approve`,
+    {
+      method: 'POST',
+      credentials: 'include',
+    },
+  )
+  const data = (await res.json().catch(() => ({}))) as { error?: string }
+  if (!res.ok) {
+    throw new HttpError(data.error || 'Request failed', res.status)
+  }
+}
+
+export async function rejectVendor(vendorId: number): Promise<void> {
+  const res = await fetch(
+    `${API_BASE}/api/admin/vendors/${vendorId}/reject`,
+    {
+      method: 'POST',
+      credentials: 'include',
+    },
+  )
+  const data = (await res.json().catch(() => ({}))) as { error?: string }
+  if (!res.ok) {
+    throw new HttpError(data.error || 'Request failed', res.status)
+  }
 }
 
 export function homePathForRole(role: Role): string {

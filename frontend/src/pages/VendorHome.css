@@ -1,0 +1,77 @@
+.vendor-dashboard-page {
+  min-height: 100svh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  padding: 24px;
+  background: #fff;
+}
+
+.vendor-dashboard-panel {
+  width: 100%;
+  max-width: 640px;
+  background: #4a7fb5;
+  border-radius: 4px;
+  padding: 24px 20px 28px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.vendor-dashboard-header {
+  margin: 0;
+  padding: 16px 14px;
+  text-align: center;
+  background: #d9d9d9;
+  border-radius: 4px;
+}
+
+.vendor-dashboard-welcome-line {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #1a1a1a;
+  line-height: 1.35;
+}
+
+.vendor-dashboard-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: stretch;
+  gap: 12px;
+}
+
+.vendor-dash-btn {
+  flex: 1 1 calc(25% - 12px);
+  min-width: 120px;
+  margin: 0;
+  padding: 12px 10px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #1a1a1a;
+  background: #d9d9d9;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: inherit;
+  box-sizing: border-box;
+}
+
+.vendor-dash-btn:hover {
+  filter: brightness(1.05);
+}
+
+@media (max-width: 560px) {
+  .vendor-dash-btn {
+    flex: 1 1 calc(50% - 8px);
+  }
+}
