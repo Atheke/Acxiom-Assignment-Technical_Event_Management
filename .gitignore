@@ -1,0 +1,6 @@
+.env
+.env.local
+node_modules/
+
+.cursor/
+Technical Event Management 1.xlsx
