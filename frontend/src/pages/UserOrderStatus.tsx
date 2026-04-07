@@ -10,7 +10,7 @@ import {
   logoutRequest,
   type UserOrderLine,
   type UserOrderRow,
-} from '../api'
+} from '../services/api'
 import type { OrderConfirmationState } from '../orderConfirmationState'
 import './UserOrderSuccess.css'
 import './UserOrderStatus.css'

@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { VENDOR_CATEGORY_OPTIONS, meRequest, logoutRequest } from '../api'
+import { VENDOR_CATEGORY_OPTIONS, meRequest, logoutRequest } from '../services/api'
 import { useCart } from '../hooks/useCart'
 import './UserHome.css'
 

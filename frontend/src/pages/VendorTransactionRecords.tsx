@@ -4,7 +4,7 @@ import {
   type VendorOrderSummary,
   fetchVendorOrders,
   logoutRequest,
-} from '../api'
+} from '../services/api'
 import './VendorTransactionRecords.css'
 
 function formatRs(n: number) {

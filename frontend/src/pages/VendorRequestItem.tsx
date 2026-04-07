@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { type VendorProduct, fetchVendorProducts, logoutRequest } from '../api'
+import { type VendorProduct, fetchVendorProducts, logoutRequest } from '../services/api'
 import './VendorRequestItem.css'
 
 export default function VendorRequestItem() {

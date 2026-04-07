@@ -2,8 +2,8 @@
   min-height: 100svh;
   width: 100%;
   box-sizing: border-box;
-  background: #d9d9d9;
-  padding: 0 0 32px;
+  background: var(--ems-bg, #f1f5f9);
+  padding: 0 0 2rem;
 }
 
 .vendor-yours-header {
@@ -11,26 +11,27 @@
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
-  padding: 16px 20px;
-  background: #c8c8c8;
-  border-bottom: 1px solid #aaa;
+  gap: 0.75rem;
+  padding: 1rem 1.25rem;
+  background: var(--ems-surface, #fff);
+  border-bottom: 1px solid var(--ems-border, #e2e8f0);
 }
 
 .vendor-yours-header-btn {
-  padding: 10px 18px;
-  font-size: 0.9rem;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
   font-weight: 600;
   color: #fff;
-  background: #4a7fb5;
+  background: var(--ems-primary, #1e3a5f);
   border: none;
-  border-radius: 4px;
+  border-radius: var(--ems-radius-sm, 6px);
   cursor: pointer;
   font-family: inherit;
   text-decoration: none;
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  transition: filter 0.15s ease;
 }
 
 .vendor-yours-header-btn:hover {
@@ -41,70 +42,71 @@
   margin: 0;
   flex: 1;
   text-align: center;
-  font-size: 1.15rem;
-  font-weight: 700;
-  color: #1a1a1a;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--ems-text, #0f172a);
   min-width: 140px;
 }
 
 .vendor-yours-toolbar {
   max-width: 900px;
   margin: 0 auto;
-  padding: 16px 20px 0;
+  padding: 1rem 1.25rem 0;
   display: flex;
   justify-content: flex-start;
 }
 
 .vendor-yours-insert {
-  padding: 10px 22px;
-  font-size: 0.95rem;
-  font-weight: 700;
+  padding: 0.5rem 1.25rem;
+  font-size: 0.875rem;
+  font-weight: 600;
   color: #fff;
-  background: #2e7d32;
+  background: var(--ems-primary, #1e3a5f);
   border: none;
-  border-radius: 8px;
+  border-radius: var(--ems-radius-sm, 6px);
   cursor: pointer;
   font-family: inherit;
   text-decoration: none;
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 0.5rem;
+  transition: filter 0.15s ease;
 }
 
 .vendor-yours-insert:hover {
-  filter: brightness(1.06);
+  filter: brightness(1.08);
 }
 
 .vendor-yours-panel {
   max-width: 900px;
-  margin: 16px auto 0;
-  padding: 0 20px;
+  margin: 1rem auto 0;
+  padding: 0 1.25rem;
 }
 
 .vendor-yours-table-wrap {
-  background: #fff;
-  border-radius: 8px;
+  background: var(--ems-surface, #fff);
+  border-radius: var(--ems-radius-sm, 6px);
   overflow: hidden;
-  border: 1px solid #aaa;
+  border: 1px solid var(--ems-border, #e2e8f0);
 }
 
 .vendor-yours-table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 0.9rem;
+  font-size: 0.875rem;
 }
 
 .vendor-yours-table th {
-  padding: 12px 14px;
+  padding: 0.65rem 0.85rem;
   text-align: left;
-  background: #4a7fb5;
+  background: var(--ems-primary, #1e3a5f);
   color: #fff;
   font-weight: 600;
 }
 
 .vendor-yours-table td {
-  padding: 12px 14px;
-  border-bottom: 1px solid #ddd;
+  padding: 0.65rem 0.85rem;
+  border-bottom: 1px solid var(--ems-border, #e2e8f0);
   vertical-align: middle;
 }
 
@@ -116,31 +118,31 @@
   width: 52px;
   height: 52px;
   object-fit: cover;
-  border-radius: 6px;
-  background: #ddd;
+  border-radius: var(--ems-radius-sm, 6px);
+  background: var(--ems-border, #e2e8f0);
 }
 
 .vendor-yours-thumb-ph {
   width: 52px;
   height: 52px;
-  border-radius: 6px;
-  background: #ccc;
+  border-radius: var(--ems-radius-sm, 6px);
+  background: var(--ems-border, #e2e8f0);
   font-size: 0.65rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #555;
+  color: var(--ems-text-muted, #64748b);
   text-align: center;
 }
 
 .vendor-yours-delete {
-  padding: 8px 14px;
-  font-size: 0.85rem;
+  padding: 0.45rem 0.85rem;
+  font-size: 0.8125rem;
   font-weight: 600;
   color: #fff;
-  background: #c62828;
+  background: var(--ems-danger, #b91c1c);
   border: none;
-  border-radius: 6px;
+  border-radius: var(--ems-radius-sm, 6px);
   cursor: pointer;
   font-family: inherit;
 }
@@ -158,13 +160,13 @@
 .vendor-yours-loading,
 .vendor-yours-error {
   margin: 0;
-  padding: 28px 20px;
+  padding: 1.75rem 1.25rem;
   text-align: center;
-  color: #333;
+  color: var(--ems-text-muted, #64748b);
 }
 
 .vendor-yours-error {
-  color: #7a1a1a;
-  background: rgba(255, 200, 200, 0.35);
-  border-radius: 8px;
+  color: var(--ems-danger, #b91c1c);
+  background: var(--ems-danger-soft, #fef2f2);
+  border-radius: var(--ems-radius-sm, 6px);
 }

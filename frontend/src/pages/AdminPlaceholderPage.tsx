@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom'
-import { logoutRequest } from '../api'
+import { logoutRequest } from '../services/api'
 import './AdminHome.css'
 
 type Props = {
@@ -22,7 +22,7 @@ export default function AdminPlaceholderPage({
 
   return (
     <div className="admin-dashboard-page">
-      <div className="admin-dashboard-panel" style={{ minHeight: 200 }}>
+      <div className="admin-dashboard-panel admin-dashboard-panel--placeholder">
         <div className="admin-dashboard-top">
           <button
             type="button"
@@ -36,7 +36,7 @@ export default function AdminPlaceholderPage({
           </button>
         </div>
         <p className="admin-dashboard-welcome">{title}</p>
-        <p style={{ margin: 0, textAlign: 'center', color: '#333' }}>
+        <p className="ems-placeholder-note">
           This section will be implemented next.
         </p>
       </div>

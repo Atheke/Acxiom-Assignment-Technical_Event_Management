@@ -8,7 +8,7 @@ import {
   homePathForRole,
   logoutRequest,
   meRequest,
-} from '../api'
+} from '../services/api'
 
 type Props = {
   allowedRole: Role

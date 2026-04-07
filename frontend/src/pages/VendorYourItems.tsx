@@ -5,7 +5,7 @@ import {
   deleteVendorProduct,
   fetchVendorProducts,
   logoutRequest,
-} from '../api'
+} from '../services/api'
 import './VendorYourItems.css'
 
 export default function VendorYourItems() {

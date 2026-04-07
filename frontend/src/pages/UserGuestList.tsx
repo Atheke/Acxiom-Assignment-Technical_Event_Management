@@ -7,7 +7,7 @@ import {
   fetchUserGuests,
   logoutRequest,
   updateUserGuest,
-} from '../api'
+} from '../services/api'
 import './UserGuestList.css'
 
 const emptyForm = {

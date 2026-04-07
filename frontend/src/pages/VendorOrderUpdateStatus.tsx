@@ -5,7 +5,7 @@ import {
   fetchVendorOrder,
   logoutRequest,
   updateVendorOrderStatus,
-} from '../api'
+} from '../services/api'
 import './VendorOrderUpdateStatus.css'
 
 const STATUS_OPTIONS: { value: VendorOrderStatusValue; label: string }[] = [

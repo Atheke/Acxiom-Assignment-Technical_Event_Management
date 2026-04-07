@@ -2,7 +2,7 @@
   min-height: 100svh;
   width: 100%;
   box-sizing: border-box;
-  background: #d9d9d9;
+  background: var(--ems-bg, #f1f5f9);
   padding: 0 16px 40px;
 }
 
@@ -20,21 +20,22 @@
 .user-vbrowse-outline-btn {
   padding: 10px 20px;
   font-size: 0.9rem;
-  font-weight: 700;
-  color: #1b5e20;
-  background: #fff;
-  border: 2px solid #2e7d32;
-  border-radius: 6px;
+  font-weight: 600;
+  color: var(--ems-primary, #1e3a5f);
+  background: var(--ems-surface, #fff);
+  border: 1px solid var(--ems-border-strong, #cbd5e1);
+  border-radius: var(--ems-radius-sm, 6px);
   cursor: pointer;
   font-family: inherit;
   text-decoration: none;
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  transition: background 0.15s ease;
 }
 
 .user-vbrowse-outline-btn:hover {
-  background: #e8f5e9;
+  background: var(--ems-surface-muted, #f8fafc);
 }
 
 .user-vbrowse-category-strip {
@@ -56,7 +57,7 @@
   font-size: 0.95rem;
   font-weight: 700;
   color: #fff;
-  background: #2f6fad;
+  background: var(--ems-primary, #1e3a5f);
 }
 
 .user-vbrowse-category-part + .user-vbrowse-category-part {
@@ -80,17 +81,18 @@
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  background: #2f6fad;
-  border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  background: var(--ems-surface, #fff);
+  border: 1px solid var(--ems-border, #e2e8f0);
+  border-radius: var(--ems-radius, 8px);
+  box-shadow: var(--ems-shadow, 0 1px 3px rgba(15, 23, 42, 0.06));
   box-sizing: border-box;
 }
 
 .user-vbrowse-vendor-tag {
   margin: 0 0 10px;
   font-size: 0.82rem;
-  font-weight: 700;
-  color: rgba(255, 255, 255, 0.95);
+  font-weight: 600;
+  color: var(--ems-text, #0f172a);
   text-align: center;
   letter-spacing: 0.02em;
 }
@@ -154,7 +156,7 @@
   margin: 4px 0 0;
   font-size: 0.78rem;
   font-weight: 700;
-  color: #1b5e20;
+  color: var(--ems-success, #047857);
 }
 
 .user-vbrowse-product-add {
@@ -162,24 +164,24 @@
   width: 100%;
   padding: 8px 10px;
   font-size: 0.78rem;
-  font-weight: 700;
-  color: #1b5e20;
-  background: #fff;
-  border: 2px solid #2e7d32;
-  border-radius: 6px;
+  font-weight: 600;
+  color: #fff;
+  background: var(--ems-primary, #1e3a5f);
+  border: none;
+  border-radius: var(--ems-radius-sm, 6px);
   cursor: pointer;
   font-family: inherit;
 }
 
 .user-vbrowse-product-add:hover {
-  background: #e8f5e9;
+  filter: brightness(1.08);
 }
 
 .user-vbrowse-no-products {
   margin: 8px 0 12px;
   font-size: 0.88rem;
-  font-weight: 600;
-  color: rgba(255, 255, 255, 0.92);
+  font-weight: 500;
+  color: var(--ems-text-muted, #64748b);
   text-align: center;
 }
 

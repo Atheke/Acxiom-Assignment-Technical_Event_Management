@@ -2,7 +2,7 @@
   min-height: 100svh;
   width: 100%;
   box-sizing: border-box;
-  background: #d9d9d9;
+  background: var(--ems-bg, #f1f5f9);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -42,7 +42,7 @@
   margin: 0 auto 18px;
   padding: 14px 16px;
   text-align: center;
-  background: #4a7fb5;
+  background: var(--ems-primary, #1e3a5f);
   color: #fff;
   border-radius: 10px;
   font-weight: 700;
@@ -71,7 +71,7 @@
 
 .order-success-cell {
   padding: 10px 12px;
-  background: #4a7fb5;
+  background: var(--ems-primary, #1e3a5f);
   color: #fff;
   border-radius: 8px;
   font-size: 0.82rem;
@@ -100,7 +100,7 @@
   font-size: 1rem;
   font-weight: 700;
   color: #fff;
-  background: #4a7fb5;
+  background: var(--ems-primary, #1e3a5f);
   border: none;
   border-radius: 10px;
   cursor: pointer;

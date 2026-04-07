@@ -5,7 +5,7 @@ import {
   fetchUserVendorById,
   fetchVendorProductsForUser,
   logoutRequest,
-} from '../api'
+} from '../services/api'
 import { useCart } from '../hooks/useCart'
 import './UserVendorShop.css'
 

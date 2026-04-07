@@ -1,4 +1,14 @@
-const API_BASE = ''
+/**
+ * Production: set `VITE_BACKEND_URL` to your API origin (e.g. https://api.example.com).
+ * Local dev: leave unset to use the Vite proxy (`/api` → backend).
+ */
+function apiBase(): string {
+  const raw = import.meta.env.VITE_BACKEND_URL
+  if (raw == null || String(raw).trim() === '') return ''
+  return String(raw).trim().replace(/\/$/, '')
+}
+
+const API_BASE = apiBase()
 
 export class HttpError extends Error {
   status: number
@@ -68,8 +78,6 @@ export async function logoutRequest(): Promise<void> {
   })
 }
 
-export type SignupRole = 'USER' | 'VENDOR'
-
 export type VendorCategory =
   | 'CATERING'
   | 'FLORIST'
@@ -90,15 +98,12 @@ export async function signupRequest(body: {
   name: string
   email: string
   password: string
-  role: SignupRole
-  businessName?: string
-  category?: VendorCategory
 }): Promise<{ user: AuthUser; sessionIssued: boolean }> {
   const res = await fetch(`${API_BASE}/api/auth/signup`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     credentials: 'include',
-    body: JSON.stringify(body),
+    body: JSON.stringify({ ...body, role: 'USER' }),
   })
   const data = (await res.json().catch(() => ({}))) as {
     user?: AuthUser
@@ -186,6 +191,239 @@ export async function rejectVendor(vendorId: number): Promise<void> {
   if (!res.ok) {
     throw new HttpError(data.error || 'Request failed', res.status)
   }
+}
+
+export async function createVendorAsAdmin(body: {
+  name: string
+  email: string
+  password: string
+  businessName: string
+  category: VendorCategory
+}): Promise<{ user: AuthUser }> {
+  const res = await fetch(`${API_BASE}/api/admin/vendors`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    credentials: 'include',
+    body: JSON.stringify(body),
+  })
+  const data = (await res.json().catch(() => ({}))) as {
+    user?: AuthUser
+    error?: string
+  }
+  if (!res.ok) {
+    throw new HttpError(data.error || 'Request failed', res.status)
+  }
+  if (!data.user) {
+    throw new Error('Invalid response')
+  }
+  return { user: data.user }
+}
+
+export type MembershipPlan = {
+  id: number
+  name: string
+  price: number
+  durationDays: number
+  features: string | null
+  createdAt: string
+}
+
+export type ApprovedVendorOption = {
+  vendorUserId: number
+  name: string
+  email: string
+  businessName: string
+}
+
+export async function fetchMembershipPlans(): Promise<MembershipPlan[]> {
+  const res = await fetch(`${API_BASE}/api/admin/memberships`, {
+    credentials: 'include',
+  })
+  const data = (await res.json().catch(() => ({}))) as {
+    items?: MembershipPlan[]
+    error?: string
+  }
+  if (!res.ok) {
+    throw new HttpError(data.error || 'Request failed', res.status)
+  }
+  return data.items ?? []
+}
+
+export async function createMembershipPlan(body: {
+  name: string
+  price: number
+  durationDays: number
+  features?: string
+}): Promise<{ membership: MembershipPlan }> {
+  const res = await fetch(`${API_BASE}/api/admin/memberships`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    credentials: 'include',
+    body: JSON.stringify(body),
+  })
+  const data = (await res.json().catch(() => ({}))) as {
+    membership?: MembershipPlan
+    error?: string
+  }
+  if (!res.ok) {
+    throw new HttpError(data.error || 'Request failed', res.status)
+  }
+  if (!data.membership) {
+    throw new Error('Invalid response')
+  }
+  return { membership: data.membership }
+}
+
+export async function fetchApprovedVendorsForMembership(): Promise<
+  ApprovedVendorOption[]
+> {
+  const res = await fetch(`${API_BASE}/api/admin/approved-vendors`, {
+    credentials: 'include',
+  })
+  const data = (await res.json().catch(() => ({}))) as {
+    items?: ApprovedVendorOption[]
+    error?: string
+  }
+  if (!res.ok) {
+    throw new HttpError(data.error || 'Request failed', res.status)
+  }
+  return data.items ?? []
+}
+
+export type VendorMembershipRow = {
+  id: number
+  vendorUserId: number
+  membershipId: number
+  startDate: string
+  endDate: string
+  status: string
+}
+
+export async function createVendorMembershipAssignment(body: {
+  vendorUserId: number
+  membershipId: number
+  startDate?: string
+}): Promise<{ vendorMembership: VendorMembershipRow }> {
+  const res = await fetch(`${API_BASE}/api/admin/vendor-memberships`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    credentials: 'include',
+    body: JSON.stringify(body),
+  })
+  const data = (await res.json().catch(() => ({}))) as {
+    vendorMembership?: VendorMembershipRow
+    error?: string
+  }
+  if (!res.ok) {
+    throw new HttpError(data.error || 'Request failed', res.status)
+  }
+  if (!data.vendorMembership) {
+    throw new Error('Invalid response')
+  }
+  return { vendorMembership: data.vendorMembership }
+}
+
+export type VendorMembershipSubscription = {
+  id: number
+  vendorUserId: number
+  vendorName: string
+  vendorEmail: string
+  businessName: string
+  vendorApprovalStatus: string
+  membershipId: number
+  planName: string
+  planPrice: number
+  planDurationDays: number
+  planFeatures: string | null
+  startDate: string
+  endDate: string
+  status: string
+}
+
+export async function fetchVendorMembershipSubscriptions(): Promise<
+  VendorMembershipSubscription[]
+> {
+  const res = await fetch(`${API_BASE}/api/admin/vendor-memberships`, {
+    credentials: 'include',
+  })
+  const data = (await res.json().catch(() => ({}))) as {
+    items?: VendorMembershipSubscription[]
+    error?: string
+  }
+  if (!res.ok) {
+    throw new HttpError(data.error || 'Request failed', res.status)
+  }
+  return data.items ?? []
+}
+
+export type AdminVendorDirectoryRow = {
+  vendorId: number
+  userId: number
+  name: string
+  email: string
+  businessName: string
+  category: string
+  approvalStatus: string
+  createdAt: string
+}
+
+export async function fetchAllVendorsAdmin(): Promise<AdminVendorDirectoryRow[]> {
+  const res = await fetch(`${API_BASE}/api/admin/vendors`, {
+    credentials: 'include',
+  })
+  const data = (await res.json().catch(() => ({}))) as {
+    items?: AdminVendorDirectoryRow[]
+    error?: string
+  }
+  if (!res.ok) {
+    throw new HttpError(data.error || 'Request failed', res.status)
+  }
+  return data.items ?? []
+}
+
+export type EndUserDirectoryRow = {
+  id: number
+  name: string
+  email: string
+  createdAt: string
+}
+
+export async function fetchEndUsers(): Promise<EndUserDirectoryRow[]> {
+  const res = await fetch(`${API_BASE}/api/admin/users`, {
+    credentials: 'include',
+  })
+  const data = (await res.json().catch(() => ({}))) as {
+    items?: EndUserDirectoryRow[]
+    error?: string
+  }
+  if (!res.ok) {
+    throw new HttpError(data.error || 'Request failed', res.status)
+  }
+  return data.items ?? []
+}
+
+export async function createEndUserAsAdmin(body: {
+  name: string
+  email: string
+  password: string
+}): Promise<{ user: AuthUser }> {
+  const res = await fetch(`${API_BASE}/api/admin/users`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    credentials: 'include',
+    body: JSON.stringify(body),
+  })
+  const data = (await res.json().catch(() => ({}))) as {
+    user?: AuthUser
+    error?: string
+  }
+  if (!res.ok) {
+    throw new HttpError(data.error || 'Request failed', res.status)
+  }
+  if (!data.user) {
+    throw new Error('Invalid response')
+  }
+  return { user: data.user }
 }
 
 export type VendorProduct = {
@@ -363,9 +601,8 @@ export async function fetchVendorSales(): Promise<VendorSale[]> {
 export type VendorUserRequestRow = {
   id: number
   requesterName: string
-  productName: string | null
-  message: string | null
-  status: string
+  message: string
+  status: 'PENDING' | 'ACCEPTED' | 'REJECTED' | string
   createdAt: string
 }
 

@@ -9,7 +9,7 @@ import {
   meRequest,
   updateVendorProduct,
   logoutRequest,
-} from '../api'
+} from '../services/api'
 import './VendorAddItem.css'
 
 export default function VendorAddItem() {

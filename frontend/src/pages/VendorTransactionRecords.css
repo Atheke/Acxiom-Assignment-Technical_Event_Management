@@ -2,7 +2,7 @@
   min-height: 100svh;
   width: 100%;
   box-sizing: border-box;
-  background: #d9d9d9;
+  background: var(--ems-bg, #f1f5f9);
   padding: 0 0 32px;
 }
 
@@ -13,8 +13,8 @@
   justify-content: space-between;
   gap: 12px;
   padding: 16px 20px;
-  background: #c8c8c8;
-  border-bottom: 1px solid #aaa;
+  background: var(--ems-surface, #fff);
+  border-bottom: 1px solid var(--ems-border, #e2e8f0);
 }
 
 .vendor-tx-rec-header-btn {
@@ -22,7 +22,7 @@
   font-size: 0.9rem;
   font-weight: 600;
   color: #fff;
-  background: #4a7fb5;
+  background: var(--ems-primary, #1e3a5f);
   border: none;
   border-radius: 4px;
   cursor: pointer;
@@ -81,7 +81,7 @@
 .vendor-tx-rec-table th {
   padding: 12px 14px;
   text-align: left;
-  background: #4a7fb5;
+  background: var(--ems-primary, #1e3a5f);
   color: #fff;
   font-weight: 600;
 }

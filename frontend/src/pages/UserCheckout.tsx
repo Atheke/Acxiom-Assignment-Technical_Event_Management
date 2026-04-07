@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import {
   type PaymentMethod,
   placeOrder,
-} from '../api'
+} from '../services/api'
 import { useCart } from '../hooks/useCart'
 import './UserCheckout.css'
 

@@ -5,57 +5,60 @@
   align-items: center;
   justify-content: center;
   box-sizing: border-box;
-  padding: 24px;
-  background: #fff;
+  padding: 24px 16px;
+  background: var(--ems-bg, #f1f5f9);
 }
 
 .vendor-dashboard-panel {
   width: 100%;
   max-width: 640px;
-  background: #4a7fb5;
-  border-radius: 4px;
-  padding: 24px 20px 28px;
+  background: var(--ems-surface, #fff);
+  border-radius: var(--ems-radius, 8px);
+  padding: 1.25rem 1.25rem 1.5rem;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  gap: 22px;
+  gap: 1.25rem;
+  border: 1px solid var(--ems-border, #e2e8f0);
+  box-shadow: var(--ems-shadow, 0 1px 3px rgba(15, 23, 42, 0.06));
 }
 
 .vendor-dashboard-header {
   margin: 0;
-  padding: 16px 14px;
+  padding: 1rem 1rem;
   text-align: center;
-  background: #d9d9d9;
-  border-radius: 4px;
+  background: var(--ems-surface-muted, #f8fafc);
+  border-radius: var(--ems-radius-sm, 6px);
+  border: 1px solid var(--ems-border, #e2e8f0);
 }
 
 .vendor-dashboard-welcome-line {
   margin: 0;
-  font-size: 1.1rem;
+  font-size: 0.9375rem;
   font-weight: 600;
-  color: #1a1a1a;
-  line-height: 1.35;
+  color: var(--ems-text, #0f172a);
+  line-height: 1.4;
 }
 
 .vendor-dashboard-actions {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: center;
   align-items: stretch;
-  gap: 12px;
+  gap: 0.5rem;
 }
 
 .vendor-dash-btn {
-  flex: 1 1 calc(25% - 12px);
+  flex: 1 1 calc(25% - 0.5rem);
   min-width: 120px;
   margin: 0;
-  padding: 12px 10px;
-  font-size: 0.88rem;
+  padding: 0.65rem 0.5rem;
+  font-size: 0.8125rem;
   font-weight: 600;
-  color: #1a1a1a;
-  background: #d9d9d9;
-  border: none;
-  border-radius: 10px;
+  color: var(--ems-text, #0f172a);
+  background: var(--ems-surface-muted, #f8fafc);
+  border: 1px solid var(--ems-border-strong, #cbd5e1);
+  border-radius: var(--ems-radius-sm, 6px);
   cursor: pointer;
   text-align: center;
   text-decoration: none;
@@ -64,14 +67,16 @@
   justify-content: center;
   font-family: inherit;
   box-sizing: border-box;
+  transition: background 0.15s ease, border-color 0.15s ease;
 }
 
 .vendor-dash-btn:hover {
-  filter: brightness(1.05);
+  background: var(--ems-accent-soft, #eff6ff);
+  border-color: var(--ems-accent, #2563eb);
 }
 
 @media (max-width: 560px) {
   .vendor-dash-btn {
-    flex: 1 1 calc(50% - 8px);
+    flex: 1 1 calc(50% - 0.35rem);
   }
 }

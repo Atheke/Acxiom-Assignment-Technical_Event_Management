@@ -1,5 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom'
-import { logoutRequest } from '../api'
+import { logoutRequest } from '../services/api'
 import './AdminHome.css'
 import './MaintainUser.css'
 
@@ -64,6 +64,12 @@ export default function MaintainVendorPage() {
                 to="/admin/vendors/management/update"
               >
                 Update
+              </Link>
+              <Link
+                className="maintain-user-action"
+                to="/admin/vendors/pending-approvals"
+              >
+                Pending approvals
               </Link>
             </div>
           </div>

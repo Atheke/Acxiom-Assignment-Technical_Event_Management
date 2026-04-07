@@ -3,7 +3,7 @@
   width: 100%;
   box-sizing: border-box;
   padding: 0;
-  background: #e8e8e8;
+  background: var(--ems-bg, #f1f5f9);
 }
 
 .vendor-add-topbar {
@@ -13,7 +13,7 @@
   justify-content: space-between;
   gap: 16px;
   padding: 14px 20px;
-  background: #4a7fb5;
+  background: var(--ems-primary, #1e3a5f);
 }
 
 .vendor-add-welcome {
@@ -35,23 +35,24 @@
 }
 
 .vendor-add-nav-btn {
-  padding: 10px 14px;
-  font-size: 0.85rem;
+  padding: 0.5rem 0.85rem;
+  font-size: 0.8125rem;
   font-weight: 600;
-  color: #1a1a1a;
-  background: #d9d9d9;
-  border: none;
-  border-radius: 10px;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: var(--ems-radius-sm, 6px);
   cursor: pointer;
   font-family: inherit;
   text-decoration: none;
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  transition: background 0.15s ease;
 }
 
 .vendor-add-nav-btn:hover {
-  filter: brightness(1.05);
+  background: rgba(255, 255, 255, 0.22);
 }
 
 .vendor-add-main {
@@ -71,64 +72,68 @@
 }
 
 .vendor-add-form-panel {
-  background: #4a7fb5;
-  border-radius: 6px;
-  padding: 20px;
+  background: var(--ems-surface, #fff);
+  border-radius: var(--ems-radius, 8px);
+  padding: 1.25rem;
   box-sizing: border-box;
+  border: 1px solid var(--ems-border, #e2e8f0);
+  box-shadow: var(--ems-shadow, 0 1px 3px rgba(15, 23, 42, 0.06));
 }
 
 .vendor-add-form-title {
-  margin: 0 0 16px;
+  margin: 0 0 1rem;
   font-size: 1rem;
   font-weight: 600;
-  color: #fff;
+  color: var(--ems-text, #0f172a);
 }
 
 .vendor-add-field {
-  margin-bottom: 14px;
+  margin-bottom: 1rem;
 }
 
 .vendor-add-field label {
   display: block;
-  margin-bottom: 6px;
-  font-size: 0.88rem;
+  margin-bottom: 0.35rem;
+  font-size: 0.8125rem;
   font-weight: 600;
-  color: #fff;
+  color: var(--ems-text, #0f172a);
 }
 
 .vendor-add-input {
   width: 100%;
   box-sizing: border-box;
-  padding: 10px 12px;
-  font-size: 0.95rem;
-  border: none;
-  border-radius: 10px;
-  background: #d9d9d9;
-  color: #1a1a1a;
+  padding: 0.65rem 0.75rem;
+  font-size: 0.9375rem;
+  border: 1px solid var(--ems-border-strong, #cbd5e1);
+  border-radius: var(--ems-radius-sm, 6px);
+  background: var(--ems-surface, #fff);
+  color: var(--ems-text, #0f172a);
   font-family: inherit;
 }
 
 .vendor-add-input:focus {
-  outline: 2px solid #fff;
-  outline-offset: 1px;
+  outline: none;
+  border-color: var(--ems-accent, #2563eb);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
 }
 
 .vendor-add-submit {
-  margin-top: 8px;
+  margin-top: 0.5rem;
   width: 100%;
-  padding: 12px;
-  font-size: 0.95rem;
+  padding: 0.75rem;
+  font-size: 0.9375rem;
   font-weight: 600;
-  color: #1a1a1a;
-  background: #d9d9d9;
+  color: #fff;
+  background: var(--ems-primary, #1e3a5f);
   border: none;
-  border-radius: 10px;
+  border-radius: var(--ems-radius-sm, 6px);
   cursor: pointer;
   font-family: inherit;
+  transition: filter 0.15s ease;
 }
 
 .vendor-add-submit:hover:not(:disabled) {
-  filter: brightness(1.05);
+  filter: brightness(1.08);
 }
 
 .vendor-add-submit:disabled {
@@ -137,25 +142,30 @@
 }
 
 .vendor-add-cancel {
-  margin-top: 10px;
+  margin-top: 0.65rem;
   width: 100%;
-  padding: 8px;
-  font-size: 0.85rem;
+  padding: 0.5rem;
+  font-size: 0.8125rem;
   font-weight: 600;
-  color: #fff;
+  color: var(--ems-text-muted, #64748b);
   background: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.6);
-  border-radius: 8px;
+  border: 1px solid var(--ems-border, #e2e8f0);
+  border-radius: var(--ems-radius-sm, 6px);
   cursor: pointer;
   font-family: inherit;
 }
 
+.vendor-add-cancel:hover {
+  background: var(--ems-surface-muted, #f8fafc);
+}
+
 .vendor-add-table-panel {
-  background: #d9d9d9;
-  border-radius: 6px;
-  padding: 16px;
+  background: var(--ems-surface, #fff);
+  border-radius: var(--ems-radius, 8px);
+  padding: 1rem;
   box-sizing: border-box;
   overflow-x: auto;
+  border: 1px solid var(--ems-border, #e2e8f0);
 }
 
 .vendor-add-table {
@@ -167,14 +177,14 @@
 .vendor-add-table th {
   padding: 10px 8px;
   text-align: left;
-  background: #4a7fb5;
+  background: var(--ems-primary, #1e3a5f);
   color: #fff;
   font-weight: 600;
 }
 
 .vendor-add-table td {
   padding: 10px 8px;
-  border-bottom: 1px solid #bbb;
+  border-bottom: 1px solid var(--ems-border, #e2e8f0);
   vertical-align: middle;
 }
 

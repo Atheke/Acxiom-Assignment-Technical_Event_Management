@@ -1,0 +1,2 @@
+-- Optional seed data for local development.
+-- Example: INSERT INTO users (name, email, password, role) VALUES (...);

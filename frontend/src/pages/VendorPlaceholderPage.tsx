@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom'
-import { logoutRequest } from '../api'
+import { logoutRequest } from '../services/api'
 import './VendorHome.css'
 
 type Props = {

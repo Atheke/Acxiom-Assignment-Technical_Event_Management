@@ -4,8 +4,17 @@ import {
   type VendorUserRequestRow,
   fetchVendorUserRequests,
   logoutRequest,
-} from '../api'
+} from '../services/api'
 import './VendorUserRequests.css'
+
+function formatRequestStatus(s: string) {
+  const map: Record<string, string> = {
+    PENDING: 'Pending',
+    ACCEPTED: 'Accepted',
+    REJECTED: 'Rejected',
+  }
+  return map[s.trim().toUpperCase()] ?? s
+}
 
 function formatDate(iso: string) {
   try {
@@ -78,8 +87,8 @@ export default function VendorUserRequests() {
         ) : null}
         {rows && rows.length === 0 && !error ? (
           <p className="vendor-ureq-empty">
-            No user requests yet. When customers request your products, they
-            will appear here.
+            No user requests yet. When customers send you a request message,
+            it will appear here.
           </p>
         ) : null}
         {rows && rows.length > 0 ? (
@@ -89,7 +98,6 @@ export default function VendorUserRequests() {
                 <tr>
                   <th>Date</th>
                   <th>User</th>
-                  <th>Product</th>
                   <th>Message</th>
                   <th>Status</th>
                 </tr>
@@ -99,12 +107,11 @@ export default function VendorUserRequests() {
                   <tr key={r.id}>
                     <td>{formatDate(r.createdAt)}</td>
                     <td>{r.requesterName}</td>
-                    <td>{r.productName ?? '—'}</td>
-                    <td className="vendor-ureq-msg">
-                      {r.message?.trim() ? r.message : '—'}
-                    </td>
+                    <td className="vendor-ureq-msg">{r.message}</td>
                     <td>
-                      <span className="vendor-ureq-status">{r.status}</span>
+                      <span className="vendor-ureq-status">
+                        {formatRequestStatus(r.status)}
+                      </span>
                     </td>
                   </tr>
                 ))}

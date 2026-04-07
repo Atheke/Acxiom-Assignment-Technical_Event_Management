@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import type { FormEvent } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
-import { homePathForRole, loginRequest } from '../api'
+import { homePathForRole, loginRequest } from '../services/api'
 import './Login.css'
 
 export default function Login() {
@@ -39,7 +39,7 @@ export default function Login() {
           </p>
         ) : null}
         <form className="login-form" onSubmit={onSubmit} noValidate>
-          <div className="login-row">
+          <div className="login-field">
             <label className="login-label" htmlFor="login-email">
               Email
             </label>
@@ -55,7 +55,7 @@ export default function Login() {
               required
             />
           </div>
-          <div className="login-row">
+          <div className="login-field">
             <label className="login-label" htmlFor="login-password">
               Password
             </label>

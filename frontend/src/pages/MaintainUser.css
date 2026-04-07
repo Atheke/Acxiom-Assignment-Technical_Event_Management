@@ -1,39 +1,41 @@
 .maintain-user-panel {
   width: 100%;
-  max-width: 560px;
-  min-height: 260px;
-  background: #d9d9d9;
-  border-radius: 4px;
-  padding: 20px 20px 28px;
+  max-width: 640px;
+  min-height: 280px;
+  background: var(--ems-surface, #fff);
+  border-radius: var(--ems-radius, 8px);
+  padding: 1.25rem 1.25rem 1.5rem;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 1.5rem;
+  border: 1px solid var(--ems-border, #e2e8f0);
+  box-shadow: var(--ems-shadow, 0 1px 3px rgba(15, 23, 42, 0.06));
 }
 
 .maintain-user-rows {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 1.25rem;
 }
 
 .maintain-user-row {
   display: flex;
   flex-wrap: wrap;
   align-items: stretch;
-  gap: 16px;
+  gap: 1rem;
 }
 
 .maintain-user-label {
   flex: 0 0 160px;
   margin: 0;
-  padding: 12px 14px;
-  font-size: 0.9rem;
+  padding: 0.75rem 1rem;
+  font-size: 0.875rem;
   font-weight: 600;
-  color: #1a1a1a;
-  background: #fff;
-  border: 1px solid #2e7d32;
-  border-radius: 8px;
+  color: var(--ems-text, #0f172a);
+  background: var(--ems-surface-muted, #f8fafc);
+  border: 1px solid var(--ems-border, #e2e8f0);
+  border-radius: var(--ems-radius-sm, 6px);
   font-family: inherit;
   text-align: center;
   display: flex;
@@ -47,28 +49,30 @@
   min-width: 140px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 0.5rem;
 }
 
 .maintain-user-action {
   margin: 0;
-  padding: 12px 16px;
+  padding: 0.75rem 1rem;
   text-align: center;
-  font-size: 0.95rem;
+  font-size: 0.9375rem;
   font-weight: 600;
-  color: #1a1a1a;
-  background: #fff;
-  border: 1px solid #2e7d32;
-  border-radius: 8px;
+  color: var(--ems-text, #0f172a);
+  background: var(--ems-surface, #fff);
+  border: 1px solid var(--ems-border-strong, #cbd5e1);
+  border-radius: var(--ems-radius-sm, 6px);
   text-decoration: none;
   display: flex;
   align-items: center;
   justify-content: center;
   font-family: inherit;
+  transition: background 0.15s ease, border-color 0.15s ease;
 }
 
 .maintain-user-action:hover {
-  background: #f5faf5;
+  background: var(--ems-accent-soft, #eff6ff);
+  border-color: var(--ems-accent, #2563eb);
 }
 
 @media (max-width: 480px) {

@@ -1,10 +1,16 @@
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import ProtectedRoute from './components/ProtectedRoute.tsx'
 import AdminHome from './pages/AdminHome.tsx'
-import AdminPlaceholderPage from './pages/AdminPlaceholderPage.tsx'
 import MaintainUserPage from './pages/MaintainUserPage.tsx'
+import AdminAddVendor from './pages/AdminAddVendor.tsx'
+import AdminUserManagementAdd from './pages/AdminUserManagementAdd.tsx'
+import AdminUserManagementUpdate from './pages/AdminUserManagementUpdate.tsx'
+import AdminUserMembershipAdd from './pages/AdminUserMembershipAdd.tsx'
+import AdminUserMembershipUpdate from './pages/AdminUserMembershipUpdate.tsx'
+import AdminVendorManagementUpdate from './pages/AdminVendorManagementUpdate.tsx'
+import AdminVendorMembershipAdd from './pages/AdminVendorMembershipAdd.tsx'
+import AdminVendorMembershipUpdate from './pages/AdminVendorMembershipUpdate.tsx'
 import MaintainVendorPage from './pages/MaintainVendorPage.tsx'
-import PendingUsersPage from './pages/PendingUsersPage.tsx'
 import PendingVendorsPage from './pages/PendingVendorsPage.tsx'
 import Login from './pages/Login.tsx'
 import Signup from './pages/Signup.tsx'
@@ -53,10 +59,7 @@ export default function App() {
           path="/admin/users/membership/add"
           element={
             <ProtectedRoute allowedRole="ADMIN">
-              <AdminPlaceholderPage
-                title="Membership — Add"
-                homeTo="/admin/users"
-              />
+              <AdminUserMembershipAdd />
             </ProtectedRoute>
           }
         />
@@ -64,10 +67,7 @@ export default function App() {
           path="/admin/users/membership/update"
           element={
             <ProtectedRoute allowedRole="ADMIN">
-              <AdminPlaceholderPage
-                title="Membership — Update"
-                homeTo="/admin/users"
-              />
+              <AdminUserMembershipUpdate />
             </ProtectedRoute>
           }
         />
@@ -75,7 +75,7 @@ export default function App() {
           path="/admin/users/management/add"
           element={
             <ProtectedRoute allowedRole="ADMIN">
-              <PendingUsersPage />
+              <AdminUserManagementAdd />
             </ProtectedRoute>
           }
         />
@@ -83,10 +83,7 @@ export default function App() {
           path="/admin/users/management/update"
           element={
             <ProtectedRoute allowedRole="ADMIN">
-              <AdminPlaceholderPage
-                title="User Management — Update"
-                homeTo="/admin/users"
-              />
+              <AdminUserManagementUpdate />
             </ProtectedRoute>
           }
         />
@@ -102,10 +99,7 @@ export default function App() {
           path="/admin/vendors/membership/add"
           element={
             <ProtectedRoute allowedRole="ADMIN">
-              <AdminPlaceholderPage
-                title="Membership — Add"
-                homeTo="/admin/vendors"
-              />
+              <AdminVendorMembershipAdd />
             </ProtectedRoute>
           }
         />
@@ -113,15 +107,20 @@ export default function App() {
           path="/admin/vendors/membership/update"
           element={
             <ProtectedRoute allowedRole="ADMIN">
-              <AdminPlaceholderPage
-                title="Membership — Update"
-                homeTo="/admin/vendors"
-              />
+              <AdminVendorMembershipUpdate />
             </ProtectedRoute>
           }
         />
         <Route
           path="/admin/vendors/management/add"
+          element={
+            <ProtectedRoute allowedRole="ADMIN">
+              <AdminAddVendor />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/vendors/pending-approvals"
           element={
             <ProtectedRoute allowedRole="ADMIN">
               <PendingVendorsPage />
@@ -132,10 +131,7 @@ export default function App() {
           path="/admin/vendors/management/update"
           element={
             <ProtectedRoute allowedRole="ADMIN">
-              <AdminPlaceholderPage
-                title="Vendor Management — Update"
-                homeTo="/admin/vendors"
-              />
+              <AdminVendorManagementUpdate />
             </ProtectedRoute>
           }
         />

@@ -1,5 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom'
-import { logoutRequest } from '../api'
+import { logoutRequest } from '../services/api'
 import './VendorTransactionHub.css'
 
 export default function VendorTransactionHub() {

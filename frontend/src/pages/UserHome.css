@@ -3,7 +3,7 @@
   width: 100%;
   box-sizing: border-box;
   padding: 24px 16px 40px;
-  background: #d9d9d9;
+  background: var(--ems-bg, #f1f5f9);
   display: flex;
   justify-content: center;
   align-items: flex-start;
@@ -15,64 +15,65 @@
   display: flex;
   flex-direction: column;
   gap: 0;
+  border-radius: var(--ems-radius, 8px);
+  overflow: hidden;
+  border: 1px solid var(--ems-border, #e2e8f0);
+  box-shadow: var(--ems-shadow, 0 1px 3px rgba(15, 23, 42, 0.06));
 }
 
 .user-dashboard-welcome {
   margin: 0;
-  padding: 18px 16px;
+  padding: 1rem 1.25rem;
   text-align: center;
-  font-size: 1.15rem;
-  font-weight: 700;
-  letter-spacing: 0.04em;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
   color: #fff;
-  background: #2f6fad;
-  border-radius: 4px 4px 0 0;
+  background: var(--ems-primary, #1e3a5f);
 }
 
 .user-dashboard-body {
-  background: #e4e4e4;
-  padding: 20px 16px 24px;
-  border-radius: 0 0 4px 4px;
-  position: relative;
+  background: var(--ems-surface, #fff);
+  padding: 1.25rem 1rem 1.5rem;
 }
 
 .user-dashboard-toolbar {
   display: flex;
   flex-wrap: wrap;
   align-items: flex-start;
-  gap: 12px;
+  gap: 0.75rem;
 }
 
 .user-dashboard-dropdown {
   flex: 0 0 auto;
-  width: min(200px, 100%);
-  padding: 12px 14px 14px;
-  background: #a8c8e8;
-  border: 1px solid #6a9cc9;
-  border-radius: 6px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  width: min(220px, 100%);
+  padding: 0.75rem 1rem;
+  background: var(--ems-surface, #fff);
+  border: 1px solid var(--ems-border, #e2e8f0);
+  border-radius: var(--ems-radius-sm, 6px);
+  box-shadow: var(--ems-shadow-md, 0 4px 16px rgba(15, 23, 42, 0.07));
 }
 
 .user-dashboard-dropdown-title {
-  margin: 0 0 10px;
-  font-size: 0.8rem;
-  font-weight: 700;
-  color: #1a3a5c;
+  margin: 0 0 0.5rem;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  color: var(--ems-text-muted, #64748b);
   text-transform: uppercase;
   letter-spacing: 0.06em;
 }
 
 .user-dashboard-dropdown-list {
   margin: 0;
-  padding-left: 18px;
-  font-size: 0.95rem;
-  font-weight: 600;
-  color: #1a1a1a;
-  line-height: 1.65;
+  padding-left: 1.1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--ems-text, #0f172a);
+  line-height: 1.6;
 }
 
 .user-dashboard-dropdown-list a {
-  color: #0d3a66;
+  color: var(--ems-accent, #2563eb);
   text-decoration: none;
 }
 
@@ -86,20 +87,20 @@
   flex-wrap: wrap;
   justify-content: center;
   align-items: stretch;
-  gap: 10px;
+  gap: 0.5rem;
 }
 
 .user-dashboard-btn {
-  flex: 1 1 calc(25% - 10px);
+  flex: 1 1 calc(25% - 0.5rem);
   min-width: 100px;
   margin: 0;
-  padding: 14px 12px;
-  font-size: 0.88rem;
-  font-weight: 700;
+  padding: 0.75rem 0.65rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
   color: #fff;
-  background: #2f6fad;
+  background: var(--ems-primary, #1e3a5f);
   border: none;
-  border-radius: 6px;
+  border-radius: var(--ems-radius-sm, 6px);
   cursor: pointer;
   font-family: inherit;
   text-align: center;
@@ -108,6 +109,7 @@
   align-items: center;
   justify-content: center;
   box-sizing: border-box;
+  transition: filter 0.15s ease;
 }
 
 .user-dashboard-btn:hover {
@@ -121,29 +123,29 @@
 .user-dashboard-logout-row {
   display: flex;
   justify-content: center;
-  margin-top: 18px;
+  margin-top: 1.25rem;
 }
 
 .user-dashboard-logout {
   min-width: 140px;
-  padding: 12px 28px;
-  font-size: 0.95rem;
-  font-weight: 700;
-  color: #fff;
-  background: #2f6fad;
-  border: none;
-  border-radius: 6px;
+  padding: 0.65rem 1.75rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--ems-text, #0f172a);
+  background: var(--ems-surface-muted, #f8fafc);
+  border: 1px solid var(--ems-border-strong, #cbd5e1);
+  border-radius: var(--ems-radius-sm, 6px);
   cursor: pointer;
   font-family: inherit;
 }
 
 .user-dashboard-logout:hover {
-  filter: brightness(1.08);
+  background: var(--ems-border, #e2e8f0);
 }
 
 @media (max-width: 560px) {
   .user-dashboard-btn {
-    flex: 1 1 calc(50% - 8px);
+    flex: 1 1 calc(50% - 0.35rem);
   }
 
   .user-dashboard-toolbar {

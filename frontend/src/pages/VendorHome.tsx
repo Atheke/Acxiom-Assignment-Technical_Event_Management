@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { meRequest, logoutRequest } from '../api'
+import { meRequest, logoutRequest } from '../services/api'
 import './VendorHome.css'
 
 export default function VendorHome() {
