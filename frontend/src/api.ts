@@ -317,6 +317,82 @@ export async function fetchVendorUserRequests(): Promise<VendorUserRequestRow[]>
   return data.items ?? []
 }
 
+/** Approved vendors in a category (USER session). */
+export type PublicVendorCard = {
+  vendorId: number
+  businessName: string
+  contactEmail: string
+  contactName: string
+}
+
+export async function fetchVendorsByCategory(
+  category: VendorCategory,
+): Promise<PublicVendorCard[]> {
+  const res = await fetch(
+    `${API_BASE}/api/user/vendors?category=${encodeURIComponent(category)}`,
+    { credentials: 'include' },
+  )
+  const data = (await res.json().catch(() => ({}))) as {
+    items?: PublicVendorCard[]
+    error?: string
+  }
+  if (!res.ok) {
+    throw new HttpError(data.error || 'Request failed', res.status)
+  }
+  return data.items ?? []
+}
+
+export type PublicVendorDetail = {
+  vendorId: number
+  businessName: string
+  category: VendorCategory
+  contactEmail: string
+  contactName: string
+}
+
+export async function fetchUserVendorById(
+  vendorId: number,
+): Promise<PublicVendorDetail> {
+  const res = await fetch(`${API_BASE}/api/user/vendors/${vendorId}`, {
+    credentials: 'include',
+  })
+  const data = (await res.json().catch(() => ({}))) as {
+    vendor?: PublicVendorDetail
+    error?: string
+  }
+  if (!res.ok) {
+    throw new HttpError(data.error || 'Request failed', res.status)
+  }
+  if (!data.vendor) throw new Error('Invalid response')
+  return data.vendor
+}
+
+/** Products sold by an approved vendor (USER session). */
+export type PublicVendorProduct = {
+  id: number
+  name: string
+  price: number
+  imageUrl: string | null
+  createdAt: string
+}
+
+export async function fetchVendorProductsForUser(
+  vendorId: number,
+): Promise<PublicVendorProduct[]> {
+  const res = await fetch(
+    `${API_BASE}/api/user/vendors/${vendorId}/products`,
+    { credentials: 'include' },
+  )
+  const data = (await res.json().catch(() => ({}))) as {
+    items?: PublicVendorProduct[]
+    error?: string
+  }
+  if (!res.ok) {
+    throw new HttpError(data.error || 'Request failed', res.status)
+  }
+  return data.items ?? []
+}
+
 export function homePathForRole(role: Role): string {
   switch (role) {
     case 'ADMIN':

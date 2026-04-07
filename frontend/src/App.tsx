@@ -9,6 +9,10 @@ import PendingVendorsPage from './pages/PendingVendorsPage.tsx'
 import Login from './pages/Login.tsx'
 import Signup from './pages/Signup.tsx'
 import UserHome from './pages/UserHome.tsx'
+import UserCart from './pages/UserCart.tsx'
+import UserPlaceholderPage from './pages/UserPlaceholderPage.tsx'
+import UserVendorCategory from './pages/UserVendorCategory.tsx'
+import UserVendorShop from './pages/UserVendorShop.tsx'
 import VendorHome from './pages/VendorHome.tsx'
 import VendorAddItem from './pages/VendorAddItem.tsx'
 import VendorPlaceholderPage from './pages/VendorPlaceholderPage.tsx'
@@ -201,6 +205,46 @@ export default function App() {
           element={
             <ProtectedRoute allowedRole="USER">
               <UserHome />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/user/cart"
+          element={
+            <ProtectedRoute allowedRole="USER">
+              <UserCart />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/user/guest-list"
+          element={
+            <ProtectedRoute allowedRole="USER">
+              <UserPlaceholderPage title="Guest List" />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/user/order-status"
+          element={
+            <ProtectedRoute allowedRole="USER">
+              <UserPlaceholderPage title="Order Status" />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/user/vendors/:category"
+          element={
+            <ProtectedRoute allowedRole="USER">
+              <UserVendorCategory />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/user/shop/:vendorId"
+          element={
+            <ProtectedRoute allowedRole="USER">
+              <UserVendorShop />
             </ProtectedRoute>
           }
         />

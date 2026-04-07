@@ -302,6 +302,116 @@ function vendorOrRespond(req, res) {
   }
 }
 
+function userOrRespond(req, res) {
+  const token = req.cookies[COOKIE_NAME]
+  if (!token) {
+    res.status(401).json({ error: 'Not authenticated' })
+    return null
+  }
+  try {
+    const decoded = verifyToken(token)
+    if (decoded.role !== 'USER') {
+      res.status(403).json({ error: 'Forbidden' })
+      return null
+    }
+    return decoded
+  } catch {
+    res.status(401).json({ error: 'Not authenticated' })
+    return null
+  }
+}
+
+app.get('/api/user/vendors', async (req, res) => {
+  if (!userOrRespond(req, res)) return
+  const cat =
+    typeof req.query.category === 'string' ? req.query.category.trim() : ''
+  if (!VENDOR_CATEGORIES.includes(cat)) {
+    return res.status(400).json({ error: 'Valid category is required' })
+  }
+  try {
+    const r = await pool.query(
+      `SELECT v.id AS "vendorId",
+              v.business_name AS "businessName",
+              u.email AS "contactEmail",
+              u.name AS "contactName"
+       FROM vendors v
+       JOIN users u ON u.id = v.user_id
+       WHERE v.approval_status = 'APPROVED' AND v.category = $1
+       ORDER BY v.business_name ASC`,
+      [cat],
+    )
+    res.json({ items: r.rows })
+  } catch (err) {
+    console.error(err)
+    res.status(500).json({ error: 'Server error' })
+  }
+})
+
+app.get('/api/user/vendors/:vendorId', async (req, res) => {
+  if (!userOrRespond(req, res)) return
+  const vendorId = Number.parseInt(req.params.vendorId, 10)
+  if (!Number.isFinite(vendorId)) {
+    return res.status(400).json({ error: 'Invalid vendor id' })
+  }
+  try {
+    const r = await pool.query(
+      `SELECT v.id AS "vendorId",
+              v.business_name AS "businessName",
+              v.category,
+              u.email AS "contactEmail",
+              u.name AS "contactName"
+       FROM vendors v
+       JOIN users u ON u.id = v.user_id
+       WHERE v.id = $1 AND v.approval_status = 'APPROVED'`,
+      [vendorId],
+    )
+    if (r.rows.length === 0) {
+      return res.status(404).json({ error: 'Vendor not found' })
+    }
+    res.json({ vendor: r.rows[0] })
+  } catch (err) {
+    console.error(err)
+    res.status(500).json({ error: 'Server error' })
+  }
+})
+
+app.get('/api/user/vendors/:vendorId/products', async (req, res) => {
+  if (!userOrRespond(req, res)) return
+  const vendorId = Number.parseInt(req.params.vendorId, 10)
+  if (!Number.isFinite(vendorId)) {
+    return res.status(400).json({ error: 'Invalid vendor id' })
+  }
+  try {
+    const vRow = await pool.query(
+      `SELECT user_id FROM vendors WHERE id = $1 AND approval_status = 'APPROVED'`,
+      [vendorId],
+    )
+    if (vRow.rows.length === 0) {
+      return res.status(404).json({ error: 'Vendor not found' })
+    }
+    const vendorUserId = vRow.rows[0].user_id
+    const r = await pool.query(
+      `SELECT id,
+              name,
+              price,
+              image_url AS "imageUrl",
+              created_at AS "createdAt"
+       FROM products
+       WHERE vendor_id = $1
+       ORDER BY created_at DESC`,
+      [vendorUserId],
+    )
+    const items = r.rows.map((row) => ({
+      ...row,
+      price: row.price != null ? Number(row.price) : row.price,
+    }))
+    res.json({ items })
+  } catch (err) {
+    console.error(err)
+    res.status(500).json({ error: 'Server error' })
+  }
+})
+
 app.get('/api/admin/pending-vendors', async (req, res) => {
   if (!adminOrRespond(req, res)) return
   try {
