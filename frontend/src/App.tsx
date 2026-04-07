@@ -23,9 +23,9 @@ import UserVendorCategory from './pages/UserVendorCategory.tsx'
 import UserVendorShop from './pages/UserVendorShop.tsx'
 import VendorHome from './pages/VendorHome.tsx'
 import VendorAddItem from './pages/VendorAddItem.tsx'
-import VendorPlaceholderPage from './pages/VendorPlaceholderPage.tsx'
 import VendorRequestItem from './pages/VendorRequestItem.tsx'
 import VendorYourItems from './pages/VendorYourItems.tsx'
+import VendorProductStatus from './pages/VendorProductStatus.tsx'
 import VendorTransactionHub from './pages/VendorTransactionHub.tsx'
 import VendorTransactionRecords from './pages/VendorTransactionRecords.tsx'
 import VendorOrderUpdateStatus from './pages/VendorOrderUpdateStatus.tsx'
@@ -163,7 +163,7 @@ export default function App() {
           path="/vendor/product-status"
           element={
             <ProtectedRoute allowedRole="VENDOR">
-              <VendorPlaceholderPage title="Product Status" />
+              <VendorProductStatus />
             </ProtectedRoute>
           }
         />

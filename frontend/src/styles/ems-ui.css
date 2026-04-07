@@ -1,13 +1,35 @@
 :root {
   --ems-bg: #f1f5f9;
+  --ems-page-bg: radial-gradient(
+      ellipse 100% 80% at 50% -30%,
+      rgba(99, 102, 241, 0.14),
+      transparent 55%
+    ),
+    radial-gradient(
+      ellipse 70% 50% at 100% 10%,
+      rgba(14, 165, 233, 0.1),
+      transparent 50%
+    ),
+    radial-gradient(
+      ellipse 60% 40% at 0% 80%,
+      rgba(16, 185, 129, 0.06),
+      transparent 45%
+    ),
+    linear-gradient(165deg, #eef2ff 0%, #f8fafc 38%, #f1f5f9 100%);
   --ems-surface: #ffffff;
   --ems-surface-muted: #f8fafc;
   --ems-border: #e2e8f0;
   --ems-border-strong: #cbd5e1;
   --ems-text: #0f172a;
   --ems-text-muted: #64748b;
-  --ems-primary: #1e3a5f;
-  --ems-primary-hover: #152a45;
+  --ems-primary: #4338ca;
+  --ems-primary-hover: #3730a3;
+  --ems-primary-gradient: linear-gradient(
+    135deg,
+    #4338ca 0%,
+    #6366f1 52%,
+    #4f46e5 100%
+  );
   --ems-accent: #2563eb;
   --ems-accent-soft: #eff6ff;
   --ems-success: #047857;
@@ -15,22 +37,56 @@
   --ems-danger: #b91c1c;
   --ems-danger-soft: #fef2f2;
   --ems-warning-bg: #fffbeb;
-  --ems-radius: 8px;
-  --ems-radius-sm: 6px;
-  --ems-shadow: 0 1px 3px rgba(15, 23, 42, 0.06);
-  --ems-shadow-md: 0 4px 16px rgba(15, 23, 42, 0.07);
-  --ems-font: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue',
-    sans-serif;
+  --ems-radius: 12px;
+  --ems-radius-sm: 8px;
+  --ems-radius-lg: 16px;
+  --ems-shadow: 0 1px 2px rgba(15, 23, 42, 0.05);
+  --ems-shadow-md: 0 8px 24px rgba(15, 23, 42, 0.08),
+    0 2px 8px rgba(15, 23, 42, 0.04);
+  --ems-shadow-card: 0 20px 50px -20px rgba(15, 23, 42, 0.12),
+    0 8px 16px -8px rgba(15, 23, 42, 0.08);
+  --ems-font: 'Plus Jakarta Sans', system-ui, -apple-system, 'Segoe UI', Roboto,
+    'Helvetica Neue', sans-serif;
+}
+
+body {
+  margin: 0;
+  background: var(--ems-page-bg);
+  background-attachment: fixed;
 }
 
 #root {
   font-family: var(--ems-font);
   color: var(--ems-text);
-  background: var(--ems-bg);
+  background: transparent;
   -webkit-font-smoothing: antialiased;
+  min-height: 100svh;
 }
 
-/* Override index.css marketing-scale headings inside the app shell */
+/* Primary actions — shared gradient */
+#root .login-submit,
+#root .user-dashboard-btn,
+#root .admin-dash-action,
+#root .user-section-header-btn,
+#root .app-button {
+  background: var(--ems-primary-gradient);
+  box-shadow: 0 2px 8px rgba(79, 70, 229, 0.25);
+}
+
+#root .login-submit:hover:not(:disabled),
+#root .user-dashboard-btn:hover,
+#root .admin-dash-action:hover,
+#root .user-section-header-btn:hover,
+#root .app-button:hover {
+  filter: brightness(1.05);
+  box-shadow: 0 6px 20px rgba(79, 70, 229, 0.35);
+}
+
+#root .user-dashboard-btn--active {
+  filter: brightness(1.08);
+  box-shadow: 0 4px 16px rgba(79, 70, 229, 0.4);
+}
+
 #root h1 {
   font-size: 1.25rem;
   font-weight: 600;

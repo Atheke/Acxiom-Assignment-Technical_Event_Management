@@ -6,7 +6,7 @@
   padding: 3rem 1.5rem;
   box-sizing: border-box;
   text-align: center;
-  background: var(--ems-bg, #f1f5f9);
+  background: transparent;
 }
 
 .app-title {

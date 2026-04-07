@@ -2,7 +2,7 @@
   min-height: 100svh;
   width: 100%;
   box-sizing: border-box;
-  background: var(--ems-bg, #f1f5f9);
+  background: transparent;
   padding: 0 0 2rem;
 }
 
@@ -13,8 +13,10 @@
   justify-content: space-between;
   gap: 0.75rem;
   padding: 1rem 1.25rem;
-  background: var(--ems-surface, #fff);
-  border-bottom: 1px solid var(--ems-border, #e2e8f0);
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(226, 232, 240, 0.9);
+  box-shadow: 0 4px 20px rgba(15, 23, 42, 0.04);
 }
 
 .user-section-header-btn {
@@ -22,20 +24,15 @@
   font-size: 0.875rem;
   font-weight: 600;
   color: #fff;
-  background: var(--ems-primary, #1e3a5f);
   border: none;
-  border-radius: var(--ems-radius-sm, 6px);
+  border-radius: var(--ems-radius-sm, 8px);
   cursor: pointer;
   font-family: inherit;
   text-decoration: none;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  transition: filter 0.15s ease;
-}
-
-.user-section-header-btn:hover {
-  filter: brightness(1.08);
+  transition: filter 0.15s ease, box-shadow 0.15s ease;
 }
 
 .user-section-title {
@@ -50,11 +47,11 @@
 .user-section-panel {
   max-width: 640px;
   margin: 1.5rem auto 0;
-  padding: 1.5rem 1.25rem;
+  padding: 1.5rem 1.35rem;
   background: var(--ems-surface, #fff);
-  border-radius: var(--ems-radius, 8px);
-  border: 1px solid var(--ems-border, #e2e8f0);
-  box-shadow: var(--ems-shadow, 0 1px 3px rgba(15, 23, 42, 0.06));
+  border-radius: var(--ems-radius-lg, 16px);
+  border: 1px solid rgba(226, 232, 240, 0.95);
+  box-shadow: var(--ems-shadow-card, 0 20px 50px -20px rgba(15, 23, 42, 0.12));
 }
 
 .user-section-desc {

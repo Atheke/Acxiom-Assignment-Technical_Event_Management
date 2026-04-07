@@ -6,29 +6,33 @@
   justify-content: center;
   box-sizing: border-box;
   padding: 24px 16px;
-  background: var(--ems-bg, #f1f5f9);
+  background: transparent;
 }
 
 .login-card {
   width: 100%;
   max-width: 420px;
   background: var(--ems-surface, #fff);
-  border-radius: var(--ems-radius, 8px);
-  box-shadow: var(--ems-shadow-md, 0 4px 16px rgba(15, 23, 42, 0.07));
-  border: 1px solid var(--ems-border, #e2e8f0);
+  border-radius: var(--ems-radius-lg, 16px);
+  box-shadow: var(--ems-shadow-card, 0 20px 50px -20px rgba(15, 23, 42, 0.12));
+  border: 1px solid rgba(226, 232, 240, 0.9);
   overflow: hidden;
 }
 
 .login-banner {
   margin: 0;
-  padding: 1rem 1.25rem;
+  padding: 1.125rem 1.35rem;
   text-align: center;
-  font-size: 1rem;
-  font-weight: 600;
+  font-size: 1.0625rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
   color: var(--ems-text, #0f172a);
-  background: var(--ems-surface-muted, #f8fafc);
+  background: linear-gradient(
+    180deg,
+    rgba(248, 250, 252, 0.95) 0%,
+    rgba(241, 245, 249, 0.6) 100%
+  );
   border-bottom: 1px solid var(--ems-border, #e2e8f0);
-  letter-spacing: -0.01em;
 }
 
 .login-form {
@@ -52,14 +56,18 @@
 .login-input {
   width: 100%;
   box-sizing: border-box;
-  padding: 0.65rem 0.75rem;
+  padding: 0.7rem 0.85rem;
   font-size: 0.9375rem;
   border: 1px solid var(--ems-border-strong, #cbd5e1);
-  border-radius: var(--ems-radius-sm, 6px);
-  background: var(--ems-surface, #fff);
+  border-radius: var(--ems-radius-sm, 8px);
+  background: var(--ems-surface-muted, #f8fafc);
   color: var(--ems-text, #0f172a);
   font-family: inherit;
-  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+}
+
+.login-input:hover {
+  background: var(--ems-surface, #fff);
 }
 
 .login-input::placeholder {
@@ -97,20 +105,15 @@
 }
 
 .login-submit {
-  padding: 0.65rem 1.5rem;
+  padding: 0.7rem 1.5rem;
   font-size: 0.9375rem;
   font-weight: 600;
   color: #fff;
-  background: var(--ems-primary, #1e3a5f);
   border: none;
-  border-radius: var(--ems-radius-sm, 6px);
+  border-radius: var(--ems-radius-sm, 8px);
   cursor: pointer;
   font-family: inherit;
-  transition: background 0.15s ease;
-}
-
-.login-submit:hover:not(:disabled) {
-  background: var(--ems-primary-hover, #152a45);
+  transition: filter 0.15s ease, box-shadow 0.15s ease;
 }
 
 .login-submit:disabled {

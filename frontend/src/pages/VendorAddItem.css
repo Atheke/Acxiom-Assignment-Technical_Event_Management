@@ -3,7 +3,7 @@
   width: 100%;
   box-sizing: border-box;
   padding: 0;
-  background: var(--ems-bg, #f1f5f9);
+  background: transparent;
 }
 
 .vendor-add-topbar {

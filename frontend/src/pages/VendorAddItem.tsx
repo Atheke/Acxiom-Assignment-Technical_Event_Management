@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import type { FormEvent } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import {
   type VendorProduct,
   createVendorProduct,
@@ -14,6 +14,7 @@ import './VendorAddItem.css'
 
 export default function VendorAddItem() {
   const navigate = useNavigate()
+  const [searchParams, setSearchParams] = useSearchParams()
   const [welcomeName, setWelcomeName] = useState<string>('')
   const [items, setItems] = useState<VendorProduct[] | null>(null)
   const [name, setName] = useState('')
@@ -65,6 +66,33 @@ export default function VendorAddItem() {
       cancelled = true
     }
   }, [])
+
+  const editParam = searchParams.get('edit')
+  useEffect(() => {
+    if (items === null || !editParam) return
+    const id = Number.parseInt(editParam, 10)
+    const clearEditParam = () =>
+      setSearchParams(
+        (prev) => {
+          const next = new URLSearchParams(prev)
+          next.delete('edit')
+          return next
+        },
+        { replace: true },
+      )
+    if (!Number.isFinite(id)) {
+      clearEditParam()
+      return
+    }
+    const p = items.find((x) => x.id === id)
+    clearEditParam()
+    if (!p) return
+    setEditingId(p.id)
+    setName(p.name)
+    setPrice(String(p.price))
+    setImageUrl(p.imageUrl ?? '')
+    setError(null)
+  }, [items, editParam, setSearchParams])
 
   async function onLogout() {
     await logoutRequest()
