@@ -188,6 +188,135 @@ export async function rejectVendor(vendorId: number): Promise<void> {
   }
 }
 
+export type VendorProduct = {
+  id: number
+  vendorId: number
+  name: string
+  price: number
+  imageUrl: string | null
+  createdAt: string
+}
+
+export async function fetchVendorProducts(): Promise<VendorProduct[]> {
+  const res = await fetch(`${API_BASE}/api/vendor/products`, {
+    credentials: 'include',
+  })
+  const data = (await res.json().catch(() => ({}))) as {
+    items?: VendorProduct[]
+    error?: string
+  }
+  if (!res.ok) {
+    throw new HttpError(data.error || 'Request failed', res.status)
+  }
+  return data.items ?? []
+}
+
+export async function createVendorProduct(body: {
+  name: string
+  price: number
+  imageUrl: string
+}): Promise<VendorProduct> {
+  const res = await fetch(`${API_BASE}/api/vendor/products`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    credentials: 'include',
+    body: JSON.stringify(body),
+  })
+  const data = (await res.json().catch(() => ({}))) as {
+    product?: VendorProduct
+    error?: string
+  }
+  if (!res.ok) {
+    throw new HttpError(data.error || 'Request failed', res.status)
+  }
+  if (!data.product) throw new Error('Invalid response')
+  return data.product
+}
+
+export async function updateVendorProduct(
+  productId: number,
+  body: { name: string; price: number; imageUrl: string },
+): Promise<VendorProduct> {
+  const res = await fetch(
+    `${API_BASE}/api/vendor/products/${productId}`,
+    {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
+      body: JSON.stringify(body),
+    },
+  )
+  const data = (await res.json().catch(() => ({}))) as {
+    product?: VendorProduct
+    error?: string
+  }
+  if (!res.ok) {
+    throw new HttpError(data.error || 'Request failed', res.status)
+  }
+  if (!data.product) throw new Error('Invalid response')
+  return data.product
+}
+
+export async function deleteVendorProduct(productId: number): Promise<void> {
+  const res = await fetch(
+    `${API_BASE}/api/vendor/products/${productId}`,
+    {
+      method: 'DELETE',
+      credentials: 'include',
+    },
+  )
+  const data = (await res.json().catch(() => ({}))) as { error?: string }
+  if (!res.ok) {
+    throw new HttpError(data.error || 'Request failed', res.status)
+  }
+}
+
+export type VendorSale = {
+  id: number
+  buyerName: string
+  productName: string | null
+  amount: number
+  quantity: number
+  createdAt: string
+}
+
+export async function fetchVendorSales(): Promise<VendorSale[]> {
+  const res = await fetch(`${API_BASE}/api/vendor/sales`, {
+    credentials: 'include',
+  })
+  const data = (await res.json().catch(() => ({}))) as {
+    items?: VendorSale[]
+    error?: string
+  }
+  if (!res.ok) {
+    throw new HttpError(data.error || 'Request failed', res.status)
+  }
+  return data.items ?? []
+}
+
+export type VendorUserRequestRow = {
+  id: number
+  requesterName: string
+  productName: string | null
+  message: string | null
+  status: string
+  createdAt: string
+}
+
+export async function fetchVendorUserRequests(): Promise<VendorUserRequestRow[]> {
+  const res = await fetch(`${API_BASE}/api/vendor/user-requests`, {
+    credentials: 'include',
+  })
+  const data = (await res.json().catch(() => ({}))) as {
+    items?: VendorUserRequestRow[]
+    error?: string
+  }
+  if (!res.ok) {
+    throw new HttpError(data.error || 'Request failed', res.status)
+  }
+  return data.items ?? []
+}
+
 export function homePathForRole(role: Role): string {
   switch (role) {
     case 'ADMIN':

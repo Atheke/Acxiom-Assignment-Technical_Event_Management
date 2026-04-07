@@ -49,7 +49,7 @@ export default function VendorHome() {
             Add New Item
           </Link>
           <Link className="vendor-dash-btn" to="/vendor/transactions">
-            Transection
+            Transaction
           </Link>
           <button type="button" className="vendor-dash-btn" onClick={onLogout}>
             LogOut

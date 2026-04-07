@@ -1,0 +1,251 @@
+.vendor-add-page {
+  min-height: 100svh;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0;
+  background: #e8e8e8;
+}
+
+.vendor-add-topbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 20px;
+  background: #4a7fb5;
+}
+
+.vendor-add-welcome {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #fff;
+}
+
+.vendor-add-welcome span {
+  font-weight: 700;
+}
+
+.vendor-add-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.vendor-add-nav-btn {
+  padding: 10px 14px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #1a1a1a;
+  background: #d9d9d9;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-family: inherit;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.vendor-add-nav-btn:hover {
+  filter: brightness(1.05);
+}
+
+.vendor-add-main {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 20px;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+@media (max-width: 900px) {
+  .vendor-add-main {
+    grid-template-columns: 1fr;
+  }
+}
+
+.vendor-add-form-panel {
+  background: #4a7fb5;
+  border-radius: 6px;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.vendor-add-form-title {
+  margin: 0 0 16px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #fff;
+}
+
+.vendor-add-field {
+  margin-bottom: 14px;
+}
+
+.vendor-add-field label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #fff;
+}
+
+.vendor-add-input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10px 12px;
+  font-size: 0.95rem;
+  border: none;
+  border-radius: 10px;
+  background: #d9d9d9;
+  color: #1a1a1a;
+  font-family: inherit;
+}
+
+.vendor-add-input:focus {
+  outline: 2px solid #fff;
+  outline-offset: 1px;
+}
+
+.vendor-add-submit {
+  margin-top: 8px;
+  width: 100%;
+  padding: 12px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #1a1a1a;
+  background: #d9d9d9;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.vendor-add-submit:hover:not(:disabled) {
+  filter: brightness(1.05);
+}
+
+.vendor-add-submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.vendor-add-cancel {
+  margin-top: 10px;
+  width: 100%;
+  padding: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #fff;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.vendor-add-table-panel {
+  background: #d9d9d9;
+  border-radius: 6px;
+  padding: 16px;
+  box-sizing: border-box;
+  overflow-x: auto;
+}
+
+.vendor-add-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+}
+
+.vendor-add-table th {
+  padding: 10px 8px;
+  text-align: left;
+  background: #4a7fb5;
+  color: #fff;
+  font-weight: 600;
+}
+
+.vendor-add-table td {
+  padding: 10px 8px;
+  border-bottom: 1px solid #bbb;
+  vertical-align: middle;
+}
+
+.vendor-add-table th:first-child,
+.vendor-add-table td:first-child {
+  width: 72px;
+}
+
+.vendor-add-thumb {
+  width: 56px;
+  height: 56px;
+  object-fit: cover;
+  border-radius: 6px;
+  background: #ccc;
+}
+
+.vendor-add-thumb-placeholder {
+  width: 56px;
+  height: 56px;
+  border-radius: 6px;
+  background: #b0b0b0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.65rem;
+  color: #444;
+  text-align: center;
+}
+
+.vendor-add-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.vendor-add-row-btn {
+  padding: 6px 10px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  font-family: inherit;
+  border-radius: 6px;
+  border: 1px solid #1a4a7a;
+  cursor: pointer;
+  background: #fff;
+  color: #1a1a1a;
+}
+
+.vendor-add-row-btn:hover {
+  background: #eef6ff;
+}
+
+.vendor-add-row-btn-delete {
+  border-color: #c62828;
+  color: #7a1a1a;
+}
+
+.vendor-add-msg {
+  margin: 0 0 12px;
+  padding: 10px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+}
+
+.vendor-add-msg-error {
+  color: #7a1a1a;
+  background: rgba(255, 200, 200, 0.45);
+}
+
+.vendor-add-empty {
+  margin: 0;
+  padding: 24px;
+  text-align: center;
+  color: #444;
+}

@@ -10,7 +10,13 @@ import Login from './pages/Login.tsx'
 import Signup from './pages/Signup.tsx'
 import UserHome from './pages/UserHome.tsx'
 import VendorHome from './pages/VendorHome.tsx'
+import VendorAddItem from './pages/VendorAddItem.tsx'
 import VendorPlaceholderPage from './pages/VendorPlaceholderPage.tsx'
+import VendorRequestItem from './pages/VendorRequestItem.tsx'
+import VendorYourItems from './pages/VendorYourItems.tsx'
+import VendorTransactionHub from './pages/VendorTransactionHub.tsx'
+import VendorTransactionRecords from './pages/VendorTransactionRecords.tsx'
+import VendorUserRequests from './pages/VendorUserRequests.tsx'
 import './App.css'
 
 export default function App() {
@@ -138,7 +144,7 @@ export default function App() {
           path="/vendor/your-items"
           element={
             <ProtectedRoute allowedRole="VENDOR">
-              <VendorPlaceholderPage title="Your Item" />
+              <VendorYourItems />
             </ProtectedRoute>
           }
         />
@@ -146,7 +152,23 @@ export default function App() {
           path="/vendor/add-item"
           element={
             <ProtectedRoute allowedRole="VENDOR">
-              <VendorPlaceholderPage title="Add New Item" />
+              <VendorAddItem />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/vendor/product-status"
+          element={
+            <ProtectedRoute allowedRole="VENDOR">
+              <VendorPlaceholderPage title="Product Status" />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/vendor/request-item"
+          element={
+            <ProtectedRoute allowedRole="VENDOR">
+              <VendorRequestItem />
             </ProtectedRoute>
           }
         />
@@ -154,7 +176,23 @@ export default function App() {
           path="/vendor/transactions"
           element={
             <ProtectedRoute allowedRole="VENDOR">
-              <VendorPlaceholderPage title="Transection" />
+              <VendorTransactionHub />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/vendor/transactions/records"
+          element={
+            <ProtectedRoute allowedRole="VENDOR">
+              <VendorTransactionRecords />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/vendor/transactions/user-requests"
+          element={
+            <ProtectedRoute allowedRole="VENDOR">
+              <VendorUserRequests />
             </ProtectedRoute>
           }
         />
