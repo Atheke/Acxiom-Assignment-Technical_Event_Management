@@ -35,13 +35,21 @@ export function corsDynamicOrigin(origin, callback) {
 const WEEK_MS = 7 * 24 * 60 * 60 * 1000
 
 /**
- * Session cookie options. For split hosting (SPA and API on different domains),
- * set `CROSS_ORIGIN_COOKIES=true` (requires HTTPS and SameSite=None).
+ * Session cookie options.
+ *
+ * Cross-origin SPAs (Netlify + Render, etc.) need `SameSite=None` and `Secure`.
+ * In production we default to that unless `CROSS_ORIGIN_COOKIES=false` (same-site only).
+ * Development defaults to `Lax` unless `CROSS_ORIGIN_COOKIES=true`.
  */
 export function sessionCookieOptions(maxAgeMs = WEEK_MS) {
-  const cross =
+  const explicitOff = process.env.CROSS_ORIGIN_COOKIES === 'false'
+  const explicitOn =
     process.env.CROSS_ORIGIN_COOKIES === 'true' ||
     process.env.COOKIE_SAME_SITE === 'none'
+
+  const cross =
+    !explicitOff && (explicitOn || process.env.NODE_ENV === 'production')
+
   const sameSite = cross ? 'none' : process.env.COOKIE_SAME_SITE || 'lax'
   let secure = false
   if (sameSite === 'none') {
